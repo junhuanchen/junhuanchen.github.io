@@ -1,94 +1,108 @@
-﻿<!DOCTYPE html>
-<html lang="en" >
+<!DOCTYPE html>
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>jQuery圆球撞击动画特效 - 站长素材</title>
-
-	<link rel="stylesheet" href="css/style.css">
-
-	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/main.css">
-
-	<link rel="stylesheet" href="css/demo_styles.css">
-	<link rel="stylesheet" href="css/demo4.css">
-
-	<script src="js/vendor/modernizr-2.6.2.min.js"></script>
-</head>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    #terminal {
+      height: 90vh;
+    }
+    .options {
+      padding: 0.75em;
+    }
+    .info {
+      float: right;
+    }
+    #connect {
+      margin-right: 2em;
+    }
+    label.checkbox {
+      margin-right: 1em;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/index.6ebb107c.js"></script>
+  <link rel="stylesheet" href="./assets/index.ff373be6.css">
+<link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
 
-	<div class='face'>
-		<div class='eye right'></div>
-		<div class='eye left'></div>
-		<div class='mouth'></div>
-	</div>
+<script>
+  Module = {};
+  Module.onRuntimeInitialized = function() { 
+    console.log('dls lerp result: ' + Module.lerp(1, 2, 0.5));
+  }
+</script>
+<script src="demo.js"></script>
 
-	<script src='js/jquery.min.js'></script>
-	<script src="js/index.js"></script>
+<div class="options">
+  <label for="ports">Port:</label>
+  <select id="ports">
+    <option value="prompt">Click 'Connect' to add a port...</option>
+  </select>
+  <button id="connect">Connect</button>
 
-	<div class="dm-demo4">
+  <button id="download">Download output</button>
+  <button id="clear">Clear output</button>
 
-        <!-- Top Navigation -->
-        <div class="designmodo-nav">
-            <a class="button demo1" href="index.html">Demo 1</a>
-            <a class="button demo2 " href="demo2.html">Demo 2</a>
-            <a class="button demo3 " href="demo3.html">Demo 3</a>
-            <a class="button demo4 active" href="demo4.html">Demo 4</a>
-        </div>
+  <div class="info">
+    <a id="polyfill_switcher"></a>
+  </div>
 
-        <!-- Demo Navigation -->
-        <nav class="nav clearfix">
-            <button class="nav-el" id="el-topleft" data-id="ov-topleft"><span class="icon-lock"></span></button>
-            <button class="nav-el" id="el-topright" data-id="ov-topright"><span class="icon-params"></span></button>
-            <button class="nav-el" id="el-btmleft" data-id="ov-btmleft"><span class="icon-stack"></span></button>
-            <button class="nav-el" id="el-btmright" data-id="ov-btmright"><span class="icon-fire"></span></button>
-        </nav>
+  <br>
 
-        <!-- Overlay (hidden by default)-->
-        <section class="overlay" id="ov-topleft">
-            <div class="wrap">
-                <h1>Section 1</h1>
+  <label for="baudrate">Baud rate:</label>
+  <select id="baudrate">
+    <option value="9600">9600</option>
+    <option value="14400">14400</option>
+    <option value="19200">19220</option>
+    <option value="28800">28800</option>
+    <option value="38400">38400</option>
+    <option value="57600">57600</option>
+    <option value="115200" selected>115200</option>
+    <option value="230400">230400</option>
+    <option value="460800">460800</option>
+    <option value="921600">921600</option>
+    <option value="custom">Custom</option>
+  </select>
+  <input id="custom_baudrate" type="number" min="1" placeholder="Enter baudrate..." hidden>
+  <label for="databits">Data bits:</label>
+  <select id="databits">
+    <option value="7">7</option>
+    <option value="8" selected>8</option>
+  </select>
+  <label for="parity">Parity:</label>
+  <select id="parity">
+    <option value="none" selected>None</option>
+    <option value="even">Even</option>
+    <option value="odd">Odd</option>
+  </select>
+  <label for="stopbits">Stop bits:</label>
+  <select id="stopbits">
+    <option value="1" selected>1</option>
+    <option value="2">2</option>
+  </select>
+  <input id="rtscts" type="checkbox">
+  <label for="rtscts">Hardware flow control</label>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br><br> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
+  <br>
 
-            <button class="close"><span class="mfg-cancel"></span></button>
-        </section>
+  <input id="echo" type="checkbox">
+  <label class="checkbox" for="echo">Local echo</label>
+  <input id="enter_flush" type="checkbox">
+  <label class="checkbox" for="enter_flush">Flush on enter</label>
+  <input id="convert_eol" type="checkbox">
+  <label class="checkbox" for="convert_eol">Convert EOL</label>
+  <input id="autoconnect" type="checkbox">
+  <label class="checkbox" for="autoconnect">Automatically connect</label>
 
-        <section class="overlay" id="ov-topright">
-            <div class="wrap">
-                <h1>Section 2</h1>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br><br> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
-
-            <button class="close"><span class="mfg-cancel"></span></button>
-        </section>
-
-        <section class="overlay" id="ov-btmleft">
-            <div class="wrap">
-                <h1>Section 3</h1>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br><br> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
-
-            <button class="close"><span class="mfg-cancel"></span></button>
-        </section>
-
-        <section class="overlay" id="ov-btmright">
-            <div class="wrap">
-                <h1>Section 4</h1>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. <br><br> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-            </div>
-
-            <button class="close"><span class="mfg-cancel"></span></button>
-        </section>
+</div>
+<div id="terminal"></div>
 
 
-        <script src="js/jquery-1.10.2.min.js"></script>
-        <script src="js/plugins.js"></script>
-        <script src="js/demo.js"></script>
 
-    </div>
 </body>
 </html>
