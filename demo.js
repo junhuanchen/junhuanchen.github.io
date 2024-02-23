@@ -2342,10 +2342,10 @@ var wasmImports = {
 };
 var wasmExports = createWasm();
 var ___wasm_call_ctors = createExportWrapper('__wasm_call_ctors');
-var ___getTypeName = createExportWrapper('__getTypeName');
-var _fflush = createExportWrapper('fflush');
 var _malloc = createExportWrapper('malloc');
 var _free = createExportWrapper('free');
+var ___getTypeName = createExportWrapper('__getTypeName');
+var _fflush = createExportWrapper('fflush');
 var _emscripten_stack_init = () => (_emscripten_stack_init = wasmExports['emscripten_stack_init'])();
 var _emscripten_stack_get_free = () => (_emscripten_stack_get_free = wasmExports['emscripten_stack_get_free'])();
 var _emscripten_stack_get_base = () => (_emscripten_stack_get_base = wasmExports['emscripten_stack_get_base'])();
