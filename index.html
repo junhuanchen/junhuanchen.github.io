@@ -10,7 +10,7 @@
       box-sizing: border-box;
     }
     #terminal {
-      height: 90vh;
+      height: 30%;
     }
     .options {
       padding: 0.75em;
@@ -25,7 +25,7 @@
       margin-right: 1em;
     }
   </style>
-  <script type="module" crossorigin src="./assets/index.3610734a.js"></script>
+  <script type="module" crossorigin src="./assets/index.400b092e.js"></script>
   <link rel="stylesheet" href="./assets/index.ff373be6.css">
 <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body>
@@ -35,16 +35,13 @@
   Module.onRuntimeInitialized = function() { 
     console.log('dls lerp result: ' + Module.lerp(1, 2, 0.5));
   }
+  console.log('dls 1', Module);
 </script>
 <script src="demo.js"></script>
 
 <div class="options">
-  <label for="ports">Port:</label>
-  <select id="ports">
-    <option value="prompt">Click 'Connect' to add a port...</option>
-  </select>
-  <button id="connect">Connect</button>
 
+<!-- 
   <button id="download">Download output</button>
   <button id="clear">Clear output</button>
 
@@ -52,7 +49,7 @@
     <a id="polyfill_switcher"></a>
   </div>
 
-  <br>
+  <br> -->
 
   <label for="baudrate">Baud rate:</label>
   <select id="baudrate">
@@ -62,9 +59,10 @@
     <option value="28800">28800</option>
     <option value="38400">38400</option>
     <option value="57600">57600</option>
-    <option value="115200" selected>115200</option>
+    <option value="115200">115200</option>
     <option value="230400">230400</option>
     <option value="460800">460800</option>
+    <option value="500000" selected>500000</option>
     <option value="921600">921600</option>
     <option value="custom">Custom</option>
   </select>
@@ -90,6 +88,18 @@
 
   <br>
 
+  <button id="search">Search</button>
+  
+  <label for="ports">Port:</label>
+  <select id="ports">
+    <option value="prompt">Click 'Connect' to add a port...</option>
+  </select>
+  <button id="connect">Connect</button>
+  
+  <br>
+
+<!-- 
+
   <input id="echo" type="checkbox">
   <label class="checkbox" for="echo">Local echo</label>
   <input id="enter_flush" type="checkbox">
@@ -98,6 +108,7 @@
   <label class="checkbox" for="convert_eol">Convert EOL</label>
   <input id="autoconnect" type="checkbox">
   <label class="checkbox" for="autoconnect">Automatically connect</label>
+ -->
 
 </div>
 <div id="terminal"></div>
