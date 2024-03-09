@@ -1,180 +1,106 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+  <title>Dls Test Demo</title>
   <style>
     body {
-      padding: 0;
-      margin: 0;
-    }
-    * {
-      box-sizing: border-box;
-    }
-    #terminal {
-      height: 30%;
-    }
-    .options {
-      padding: 0.75em;
-    }
-    .info {
-      float: right;
-    }
-    #connect {
-      margin-right: 2em;
-    }
-    label.checkbox {
-      margin-right: 1em;
+      padding: 24px;
     }
   </style>
-  <script type="module" crossorigin src="./assets/index.fccbb823.js"></script>
-  <link rel="stylesheet" href="./assets/index.ff373be6.css">
+  <script type="module" crossorigin src="./assets/index-DWfgGa7K.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-CZnpNTXN.css">
 <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
+
 <body>
 
-<script>
-  Module = {
-    serial_rx:[],
-    serial_tx:[],
-    serial_wk: false,
-    // printSomeInfo: function() {
-    //   console.log('printSomeInfo');
-    // },
-
-    // (async () => {
-    //     var ID = [1, 2];
-    //     var Speed = [2250, 2250];
-    //     var ACC = [50, 50];
-    //     var Position = [4095, 4095];
-    //     console.log('scsSyncWritePosEx', await Module.scsSyncWritePosEx(ID, 2, Position, Speed, ACC));
-    //     await Module.scsDelay(2270);
-    //     Position = [0, 0];
-    //     console.log('scsSyncWritePosEx', await Module.scsSyncWritePosEx(ID, 2, Position, Speed, ACC));
-    //     await Module.scsDelay(2270);
-    // } )();
-
-    // (async () => {
-    //     console.log('scsWritePosEx', 0, await Module.scsWritePosEx(0, 2047, 0, 0));
-    //     await Module.scsDelay(2270);
-    //     console.log('scsWritePosEx', 0, await Module.scsWritePosEx(0, 4096, 2000, 0));
-    //     await Module.scsDelay(2270);
-    //     console.log('scsWritePosEx', 0, await Module.scsWritePosEx(0, 0, 0, 100));
-    // } )();
-
-  };
-  Module.onRuntimeInitialized = function() {
-    console.log('dls config result: ' + Module.config(10, 20, 30));
-  }
-  console.log('dls 1', Module);
-</script>
-<script src="demo.js"></script>
-
-<div>
-  <canvas id="myChart"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-  const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
+  <script>
+    var Module = {
+      onRuntimeInitialized: function () {
+        console.log('dls init: ' + Module.config(10, 20, 30));
       }
-    }
-  });
-</script>
+    };
+  </script>
+  <script src="release/scslib.js"></script>
 
-<div class="options">
+  <hr>
 
-<!-- 
-  <button id="download">Download output</button>
-  <button id="clear">Clear output</button>
+  <div class="options">
 
-  <div class="info">
-    <a id="polyfill_switcher"></a>
+    <button id="download" hidden>Download output</button>
+    <button id="clear" hidden>Clear output</button>
+
+    <div class="info" hidden>
+      <a id="polyfill_switcher"></a>
+    </div>
+
+    <label for="baudrate">Baud rate:</label>
+    <select id="baudrate">
+      <option value="9600">9600</option>
+      <option value="14400">14400</option>
+      <option value="19200">19220</option>
+      <option value="28800">28800</option>
+      <option value="38400">38400</option>
+      <option value="57600">57600</option>
+      <option value="115200">115200</option>
+      <option value="230400">230400</option>
+      <option value="460800">460800</option>
+      <option value="500000" selected>500000</option>
+      <option value="921600">921600</option>
+      <option value="custom">Custom</option>
+    </select>
+    <input id="custom_baudrate" type="number" min="1" placeholder="Enter baudrate..." hidden>
+    <label for="databits">Data bits:</label>
+    <select id="databits">
+      <option value="7">7</option>
+      <option value="8" selected>8</option>
+    </select>
+    <label for="parity">Parity:</label>
+    <select id="parity">
+      <option value="none" selected>None</option>
+      <option value="even">Even</option>
+      <option value="odd">Odd</option>
+    </select>
+    <label for="stopbits">Stop bits:</label>
+    <select id="stopbits">
+      <option value="1" selected>1</option>
+      <option value="2">2</option>
+    </select>
+    <input id="rtscts" type="checkbox">
+    <label for="rtscts">Hardware flow control</label>
+
+    <br>
+
+    <button id="search">Search</button>
+
+    <label for="ports">Port:</label>
+    <select id="ports">
+      <option value="prompt">Click 'Connect' to add a port...</option>
+    </select>
+    <button id="connect">Connect</button>
+
+    <button hidden id="debug1">debug1</button>
+
+    <button hidden id="debug2">debug2</button>
+
+    <input hidden id="echo" type="checkbox">
+    <label hidden class="checkbox" for="echo">Local echo</label>
+    <input hidden id="enter_flush" type="checkbox">
+    <label hidden class="checkbox" for="enter_flush">Flush on enter</label>
+    <input hidden id="convert_eol" type="checkbox">
+    <label hidden class="checkbox" for="convert_eol">Convert EOL</label>
+    <input hidden id="autoconnect" type="checkbox">
+    <label hidden class="checkbox" for="autoconnect">Automatically connect</label>
+  
+    <div id="terminal" hidden></div>
+
   </div>
 
-  <br> -->
+  <hr>
 
-  <label for="baudrate">Baud rate:</label>
-  <select id="baudrate">
-    <option value="9600">9600</option>
-    <option value="14400">14400</option>
-    <option value="19200">19220</option>
-    <option value="28800">28800</option>
-    <option value="38400">38400</option>
-    <option value="57600">57600</option>
-    <option value="115200">115200</option>
-    <option value="230400">230400</option>
-    <option value="460800">460800</option>
-    <option value="500000" selected>500000</option>
-    <option value="921600">921600</option>
-    <option value="custom">Custom</option>
-  </select>
-  <input id="custom_baudrate" type="number" min="1" placeholder="Enter baudrate..." hidden>
-  <label for="databits">Data bits:</label>
-  <select id="databits">
-    <option value="7">7</option>
-    <option value="8" selected>8</option>
-  </select>
-  <label for="parity">Parity:</label>
-  <select id="parity">
-    <option value="none" selected>None</option>
-    <option value="even">Even</option>
-    <option value="odd">Odd</option>
-  </select>
-  <label for="stopbits">Stop bits:</label>
-  <select id="stopbits">
-    <option value="1" selected>1</option>
-    <option value="2">2</option>
-  </select>
-  <input id="rtscts" type="checkbox">
-  <label for="rtscts">Hardware flow control</label>
-
-  <br>
-
-  <button id="search">Search</button>
+  <div id="app"></div>
   
-  <label for="ports">Port:</label>
-  <select id="ports">
-    <option value="prompt">Click 'Connect' to add a port...</option>
-  </select>
-  <button id="connect">Connect</button>
-
-  <button id="debug1">debug1</button>
-  
-  <button id="debug2">debug2</button>
-  
-  <br>
-
-<!-- 
-
-  <input id="echo" type="checkbox">
-  <label class="checkbox" for="echo">Local echo</label>
-  <input id="enter_flush" type="checkbox">
-  <label class="checkbox" for="enter_flush">Flush on enter</label>
-  <input id="convert_eol" type="checkbox">
-  <label class="checkbox" for="convert_eol">Convert EOL</label>
-  <input id="autoconnect" type="checkbox">
-  <label class="checkbox" for="autoconnect">Automatically connect</label>
- -->
-
-</div>
-<div id="terminal"></div>
-
-
 
 </body>
+
 </html>
