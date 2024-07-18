@@ -1993,13 +1993,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  4436048: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 4436109: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 4436173: function() {return Module.webglContextAttributes.powerPreference;},  
- 4436231: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 4436286: function($0) {performance.now = function() { return $0; };},  
- 4436334: function($0) {performance.now = function() { return $0; };},  
- 4436382: function() {performance.now = Module['emscripten_get_now_backup'];}
+  4436176: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 4436237: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 4436301: function() {return Module.webglContextAttributes.powerPreference;},  
+ 4436359: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 4436414: function($0) {performance.now = function() { return $0; };},  
+ 4436462: function($0) {performance.now = function() { return $0; };},  
+ 4436510: function() {performance.now = Module['emscripten_get_now_backup'];}
 };
 
 
@@ -17760,17 +17760,6 @@ function invoke_viifiii(index,a1,a2,a3,a4,a5,a6) {
   }
 }
 
-function invoke_fi(index,a1) {
-  var sp = stackSave();
-  try {
-    return dynCall_fi(index,a1);
-  } catch(e) {
-    stackRestore(sp);
-    if (e !== e+0) throw e;
-    _setThrew(1, 0);
-  }
-}
-
 function invoke_iiiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   var sp = stackSave();
   try {
@@ -17797,6 +17786,17 @@ function invoke_viiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8) {
   var sp = stackSave();
   try {
     dynCall_viiiiiiii(index,a1,a2,a3,a4,a5,a6,a7,a8);
+  } catch(e) {
+    stackRestore(sp);
+    if (e !== e+0) throw e;
+    _setThrew(1, 0);
+  }
+}
+
+function invoke_fi(index,a1) {
+  var sp = stackSave();
+  try {
+    return dynCall_fi(index,a1);
   } catch(e) {
     stackRestore(sp);
     if (e !== e+0) throw e;
