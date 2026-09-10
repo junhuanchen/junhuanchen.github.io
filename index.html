@@ -21,8 +21,8 @@
     button, a { display: block; text-align: center; text-decoration: none; background: #6ee7b7; color: #08251d; font-weight: 800; cursor: pointer; }
     button.secondary { background: transparent; color: #eef2ff; }
     button.danger { background: #ef4444; color: white; }
-    #error-toast { position: fixed; right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 100; display: flex; align-items: start; gap: 10px; box-sizing: border-box; width: min(496px, calc(100% - 24px)); padding: 12px; border: 1px solid #fb7185; border-radius: 12px; background: #4c1020; color: #ffe4e6; box-shadow: 0 12px 32px #000a; line-height: 1.45; }
-    #error-toast-message { flex: 1 1 auto; min-width: 0; }
+    #error-toast { position: fixed; right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 100; display: flex; align-items: start; gap: 10px; box-sizing: border-box; width: min(496px, calc(100vw - 24px)); padding: 12px; border: 1px solid #fb7185; border-radius: 12px; background: #4c1020; color: #ffe4e6; box-shadow: 0 12px 32px #000a; line-height: 1.45; }
+    #error-toast-message { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
     #error-toast-close { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; border-color: #fb7185; background: transparent; color: #ffe4e6; font-size: 13px; }
     .view[hidden] { display: none; }
     .page-nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
@@ -3089,6 +3089,7 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   let scanStatusTimer = 0;
   let pastedCartBytes = null;
   let pastedCartIsCart = false;
+  let errorToastTimer = 0;
   const errorToastKeys = new Set(['uploadFailed', 'conversionFailed',
     'remoteFetchUnsupported', 'remoteDownloadRequired', 'selectCart', 'noDeviceConnected']);
   let language = localStorage.getItem('pixeltoy-language') ||
@@ -3107,11 +3108,19 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
     if (errorToastKeys.has(key)) {
       errorToastMessage.textContent = status.textContent;
       errorToast.hidden = false;
+      clearTimeout(errorToastTimer);
+      errorToastTimer = window.setTimeout(hideErrorToast, 6000);
     }
   }
 
-  document.getElementById('error-toast-close').onclick = () => {
+  function hideErrorToast() {
+    clearTimeout(errorToastTimer);
+    errorToastTimer = 0;
     errorToast.hidden = true;
+  }
+
+  document.getElementById('error-toast-close').onclick = () => {
+    hideErrorToast();
   };
 
   function logDiscovery(message, detail = '') {
