@@ -13,7 +13,7 @@
     .language { display: flex; justify-content: flex-end; gap: 8px; }
     .language button { width: auto; margin: 0; padding: 7px 10px; background: transparent; color: #eef2ff; }
     .language button[aria-pressed="true"] { background: #6ee7b7; color: #08251d; }
-    .top-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    .top-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px;
       margin-bottom: 12px; }
     .number { flex: 0 0 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #6ee7b7; color: #08251d; font-weight: 800; }
     input, select, button, a { box-sizing: border-box; width: 100%; padding: 13px; margin: 7px 0; border-radius: 10px; border: 1px solid #52617a; font-size: 16px; }
@@ -21,12 +21,16 @@
     button, a { display: block; text-align: center; text-decoration: none; background: #6ee7b7; color: #08251d; font-weight: 800; cursor: pointer; }
     button.secondary { background: transparent; color: #eef2ff; }
     button.danger { background: #ef4444; color: white; }
+    #error-toast { position: fixed; right: max(12px, env(safe-area-inset-right)); bottom: max(12px, env(safe-area-inset-bottom)); z-index: 100; display: flex; align-items: start; gap: 10px; box-sizing: border-box; width: min(496px, calc(100% - 24px)); padding: 12px; border: 1px solid #fb7185; border-radius: 12px; background: #4c1020; color: #ffe4e6; box-shadow: 0 12px 32px #000a; line-height: 1.45; }
+    #error-toast-message { flex: 1 1 auto; min-width: 0; }
+    #error-toast-close { flex: 0 0 auto; width: auto; margin: 0; padding: 6px 10px; border-color: #fb7185; background: transparent; color: #ffe4e6; font-size: 13px; }
     .view[hidden] { display: none; }
     .page-nav { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 20px; }
     .page-nav button { margin: 0; padding: 9px 6px; background: transparent; color: #eef2ff; }
     .page-nav button[aria-current="page"] { border-color: #6ee7b7; color: #6ee7b7; }
-    .top-bar .connection-status { display: flex; align-items: center; gap: 6px;
-      padding: 4px 8px; color: #cbd5e1; font-size: 12px; }
+    .top-bar .connection-status { display: flex; min-width: 0; align-items: center; gap: 6px;
+      padding: 4px 8px; color: #cbd5e1; font-size: 12px; overflow: hidden; white-space: nowrap; }
+    #connection-text { overflow: hidden; text-overflow: ellipsis; }
     .connection-dot { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%;
       background: #64748b; }
     .connection-dot.online { background: #34d399; box-shadow: 0 0 6px #34d39999; }
@@ -44,7 +48,7 @@
     .home-title { margin: 0; max-width: 430px; font-size: clamp(30px, 8vw, 46px); line-height: 1.04; letter-spacing: -.04em; }
     .home-title span:last-child { color: #6ee7b7; }
     .home-intro { margin: 14px 0; color: #d7e0ef; line-height: 1.55; }
-    #switch-https-page { margin: 0 0 14px; }
+    #switch-https-page { width: auto; margin: 0; padding: 7px 10px; white-space: nowrap; font-size: 13px; }
     .home-section { margin: 12px 0 0; border: 1px solid #52617a; border-radius: 12px;
       background: #0f1b2d; }
     .home-section > summary { padding: 13px 15px; color: #6ee7b7; font-weight: 700;
@@ -206,6 +210,7 @@
       <span id="connection-dot" class="connection-dot"></span>
       <span id="connection-text">--</span>
     </div>
+    <button id="switch-https-page" class="secondary" type="button" hidden data-i18n="switchHttpsPage"></button>
   </div>
   <nav class="page-nav" aria-label="Page">
     <button id="nav-start" type="button" data-i18n="navHome"></button>
@@ -842,7 +847,6 @@
       </div>
     </div>
     <p class="home-intro" data-i18n="homeIntro"></p>
-    <button id="switch-https-page" class="secondary" type="button" hidden data-i18n="switchHttpsPage"></button>
     <button id="home-found-device" type="button" hidden>
       <span data-i18n="homeFoundDevice"></span>
       <strong id="home-found-detail"></strong>
@@ -1137,6 +1141,10 @@
   </section>
   <p id="status" aria-live="polite"></p>
 </main>
+<section id="error-toast" role="alert" aria-live="assertive" hidden>
+  <span id="error-toast-message"></span>
+  <button id="error-toast-close" type="button" data-i18n="closeController"></button>
+</section>
 <script>
 (function (root, factory) {
   const api = factory();
@@ -2840,6 +2848,7 @@ end`;
       gifWallpaperTooLarge: '超出推送预算约 {over} KiB：Lua {lua} KiB / 上限 {limit} KiB（尝试到 {colors} 色 × {frames} 帧仍未放下）。\n尝试记录：{attempts}',
       gifWallpaperPushed: 'GIF 壁纸已上传，设备正在重启。',
       invalidCartUrl: '请输入 Lexaloffle 官方 /bbs/cposts/ 下的 HTTPS .png 或 .p8.png 链接',
+      remoteFetchUnsupported: '设备固件未提供远程卡带下载接口，请升级固件后重试，或先下载卡带再选择文件。',
       remoteDownloadHint: '资源站不允许网页跨域读取。请先打开并保存图片，再用上面的文件选择器运行。',
       openCartDownload: '打开卡带图片并下载', remoteDownloadRequired: '浏览器无法直接读取该链接，请先下载卡带。',
       selectCart: '请选择 .p8 或 .p8.png Cart 文件', uploadingCart: '正在上传 Cart……',
@@ -3020,6 +3029,7 @@ end`;
       gifWallpaperTooLarge: 'Over the push budget by about {over} KiB: Lua {lua} KiB / limit {limit} KiB (still too large at {colors} colours x {frames} frames).\nAttempts: {attempts}',
       gifWallpaperPushed: 'GIF wallpaper uploaded. The device is restarting.',
       invalidCartUrl: 'Enter an HTTPS .png or .p8.png link under the official Lexaloffle /bbs/cposts/ path',
+      remoteFetchUnsupported: 'This device firmware does not support remote Cart downloads. Update the firmware, or download the Cart and select the file instead.',
       remoteDownloadHint: 'The source does not allow cross-origin reading. Open and save the image, then run it with the file picker above.',
       openCartDownload: 'Open Cart image to download', remoteDownloadRequired: 'The browser cannot read this link directly. Download the Cart first.',
       selectCart: 'Select a .p8 or .p8.png Cart file', uploadingCart: 'Uploading Cart…',
@@ -3056,6 +3066,8 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   const sendButton = document.getElementById('send');
   const stopButton = document.getElementById('stop');
   const status = document.getElementById('status');
+  const errorToast = document.getElementById('error-toast');
+  const errorToastMessage = document.getElementById('error-toast-message');
   const deviceCard = document.getElementById('device-card');
   const deviceTools = document.getElementById('device-tools');
   let activeAudio = null;
@@ -3077,6 +3089,8 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   let scanStatusTimer = 0;
   let pastedCartBytes = null;
   let pastedCartIsCart = false;
+  const errorToastKeys = new Set(['uploadFailed', 'conversionFailed',
+    'remoteFetchUnsupported', 'remoteDownloadRequired', 'selectCart', 'noDeviceConnected']);
   let language = localStorage.getItem('pixeltoy-language') ||
     (navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
 
@@ -3090,7 +3104,15 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   function setStatus(key, values = {}) {
     currentStatus = { key, values };
     status.textContent = text(key, values);
+    if (errorToastKeys.has(key)) {
+      errorToastMessage.textContent = status.textContent;
+      errorToast.hidden = false;
+    }
   }
+
+  document.getElementById('error-toast-close').onclick = () => {
+    errorToast.hidden = true;
+  };
 
   function logDiscovery(message, detail = '') {
     console.log(`[PixelToy discovery] ${message}`, detail);
@@ -3762,7 +3784,7 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   }
 
   async function prepareCartFile(file) {
-    if (!file.name.toLowerCase().endsWith('.p8.png')) return file;
+    if (!file.name.toLowerCase().endsWith('.png')) return file;
     setStatus('convertingP8Png');
     let converted;
     try {
@@ -3780,12 +3802,12 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
       { error: error.message });
   }
 
-  function showRemoteCartFallback(url) {
+  function showRemoteCartFallback(url, statusKey = 'remoteDownloadRequired') {
     const fallback = document.getElementById('remote-cart-fallback');
     const link = document.getElementById('remote-cart-download');
     link.href = url;
     fallback.hidden = false;
-    setStatus('remoteDownloadRequired');
+    setStatus(statusKey);
   }
 
   async function remoteCartFile(url) {
@@ -3802,7 +3824,8 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
       return null;
     }
     if (!response.ok) {
-      showRemoteCartFallback(url);
+      showRemoteCartFallback(url, currentBaseUrl && response.status === 404
+        ? 'remoteFetchUnsupported' : 'remoteDownloadRequired');
       return null;
     }
     const contentType = response.headers.get('Content-Type') || '';
@@ -4884,7 +4907,7 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   document.getElementById('push-cart').onclick = async () => {
     const button = document.getElementById('push-cart');
     const file = document.getElementById('cart-file').files[0];
-    if (!file || !/\.p8(?:\.png)?$/i.test(file.name)) {
+    if (!file || !/(?:\.p8|\.png)$/i.test(file.name)) {
       setStatus('selectCart');
       return;
     }
