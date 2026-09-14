@@ -89,7 +89,9 @@
     .maker-note-copy a { display: inline; width: auto; margin: 0; padding: 0; border: 0;
       background: transparent; color: #6ee7b7; text-align: inherit; text-decoration: underline;
       font-weight: inherit; cursor: pointer; }
-    .home-contact { margin: 14px 0 0; color: #aebbd0; font-size: 13px; line-height: 1.8; }
+    .home-contact { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px;
+      margin: 14px 0 0; color: #aebbd0; font-size: 13px; line-height: 1.8; }
+    .home-version { margin-left: auto; color: #7b8aa5; white-space: nowrap; }
     .contact-link { display: inline; width: auto; margin: 0; padding: 0;
       background: transparent; color: #6ee7b7; font-size: 13px; }
     #home-found-device { width: 100%; margin: 14px 0 0; padding: 12px 14px;
@@ -266,6 +268,19 @@
     .device-switcher-actions button { width: auto; margin: 0; padding: 8px 10px; }
     .device-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
     .device-entry button { min-width: 0; margin: 0; padding: 9px 10px; overflow-wrap: anywhere; }
+    .device-entry .device-choice { display: flex; align-items: center; justify-content: space-between;
+      gap: 8px; text-align: left; }
+    .device-choice-name { min-width: 0; overflow-wrap: anywhere; }
+    .device-choice-presence { flex: 0 0 auto; color: #aebbd0; font-size: 12px;
+      text-align: right; white-space: nowrap; }
+    .device-entry .device-choice[data-presence="online"] { border-color: #6ee7b7;
+      background: #12352f; color: #d1fae5; }
+    .device-entry .device-choice[data-presence="offline"] { border-color: #f87171;
+      background: #351923; color: #fecdd3; opacity: 1; cursor: not-allowed; }
+    .device-entry .device-choice[data-presence="offline"] .device-choice-presence { color: #fda4af; }
+    .device-entry .device-choice[data-presence="checking"] { border-color: #fbbf24;
+      background: #302817; color: #fef3c7; }
+    .device-entry .device-choice[data-presence="checking"] .device-choice-presence { color: #fcd34d; }
     .device-entry .device-remove { width: auto; border-color: #7f3846; background: transparent;
       color: #fecdd3; font-size: 13px; }
     .device-management { margin: 18px 0; padding: 14px 16px; border: 1px solid #52617a;
@@ -1020,8 +1035,12 @@
         </ul>
       </div>
     </details>
-    <p class="home-contact"><span data-i18n="contactLabel"></span>：
-      <span data-i18n="contactQQ"></span> · <span data-i18n="contactWechat"></span></p>
+    <p class="home-contact">
+      <span><span data-i18n="contactLabel"></span>：
+        <span data-i18n="contactQQ"></span> · <span data-i18n="contactWechat"></span></span>
+      <span class="home-version"><span data-i18n="webUpdatedAt"></span>
+        <time datetime="2026-09-14T23:41:00+08:00">2026-09-14 23:41</time></span>
+    </p>
   </section>
   <section id="device-view" class="view" hidden>
     <h1 data-i18n="manageHeading"></h1>
@@ -2960,6 +2979,7 @@ end`;
       contactLabel: '交流渠道',
       contactQQ: 'QQ 群：795572063',
       contactWechat: '微信：junhuanchen',
+      webUpdatedAt: '更新于',
       openManageDevice: '进入设备与内容', retrySetup: '重新连接',
       connNoDevice: '尚未连接设备',
       connFinding: '正在查找设备…',
@@ -3201,6 +3221,7 @@ end`;
       contactLabel: 'Contact',
       contactQQ: 'QQ group: 795572063',
       contactWechat: 'WeChat: junhuanchen',
+      webUpdatedAt: 'Updated',
       openManageDevice: 'Open Device & content', retrySetup: 'Reconnect',
       connNoDevice: 'No device connected',
       connFinding: 'Looking for the device…',
@@ -4474,8 +4495,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       const row = document.createElement('span');
       row.className = 'home-found-row';
       const identity = document.createElement('span');
-      const shortId = String(device.id || '').slice(-4);
-      identity.textContent = `${device.name || 'PixelToy'} · ${shortId} · ${device.ip || device.hostname || '--'}`;
+      identity.textContent = deviceChoiceLabel(device);
       const seen = document.createElement('small');
       seen.textContent = homeDeviceSeenLabel(device);
       row.append(identity, seen);
@@ -4531,7 +4551,17 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       }));
     } finally {
       knownDevicePresenceChecking = false;
-      renderHomeFoundDevices();
+      renderKnownDevices();
+      const selectedDevice = knownDevices.find(device => device.id === selectedDeviceId);
+      if (!currentBaseUrl && selectedDevice &&
+          knownDevicePresence.get(selectedDevice.id) === 'offline' &&
+          !deviceSwitchPending && !activeScan && !finderBusy) {
+        const onlineDevice = knownDevices
+          .filter(device => device.id !== selectedDeviceId &&
+            knownDevicePresence.get(device.id) === 'online')
+          .sort((a, b) => Date.parse(b.lastSeen || '') - Date.parse(a.lastSeen || ''))[0];
+        if (onlineDevice) await selectKnownDevice(onlineDevice.id);
+      }
     }
   }
 
@@ -4762,7 +4792,10 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
 
   function deviceChoiceLabel(device) {
     const shortId = String(device.id || '').slice(-4);
-    return `${device.name || 'PixelToy'} · ${shortId} · ${device.ip || device.hostname || '--'}`;
+    const name = String(device.name || 'PixelToy');
+    const idLabel = shortId && !name.toLowerCase().includes(shortId.toLowerCase())
+      ? ` · ${shortId}` : '';
+    return `${name}${idLabel} · ${device.ip || device.hostname || '--'}`;
   }
 
   function renderKnownDevices() {
@@ -4789,9 +4822,18 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       row.className = 'device-entry';
       const button = document.createElement('button');
       button.type = 'button';
-      button.textContent = deviceChoiceLabel(device);
+      button.className = 'device-choice';
+      const presence = knownDevicePresence.get(device.id) || 'checking';
+      button.dataset.presence = presence;
+      const name = document.createElement('span');
+      name.className = 'device-choice-name';
+      name.textContent = deviceChoiceLabel(device);
+      const presenceLabel = document.createElement('small');
+      presenceLabel.className = 'device-choice-presence';
+      presenceLabel.textContent = homeDeviceSeenLabel(device);
+      button.append(name, presenceLabel);
       button.setAttribute('aria-pressed', String(device.id === selectedDeviceId));
-      button.disabled = deviceSwitchPending;
+      button.disabled = deviceSwitchPending || presence === 'offline';
       button.onclick = () => selectKnownDevice(device.id);
       const removeButton = document.createElement('button');
       removeButton.type = 'button';
@@ -5000,6 +5042,18 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
         try {
           const info = await requestDeviceInfo(candidate);
           if (selectedDeviceId && info.id !== selectedDeviceId) {
+            const selectedDevice = knownDevices.find(device =>
+              device.id === selectedDeviceId);
+            if (!currentBaseUrl && selectedDevice &&
+                knownDevicePresence.get(selectedDevice.id) === 'offline' &&
+                !deviceSwitchPending) {
+              const elapsed = (performance.now() - started) / 1000;
+              found = true;
+              showDevice(info, elapsed, attempt, candidate, false);
+              logDiscovery('Offline selection replaced automatically',
+                `${info.name || 'PixelToy'} at ${candidate} id=${info.id}`);
+              return;
+            }
             otherDeviceFound = true;
             setStatus('otherDeviceAvailable', {
               name: info.name || 'PixelToy', id: String(info.id || '').slice(-4)
