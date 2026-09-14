@@ -17,6 +17,9 @@
       margin-bottom: 12px; }
     .number { flex: 0 0 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; background: #6ee7b7; color: #08251d; font-weight: 800; }
     input, select, button, a { box-sizing: border-box; width: 100%; padding: 13px; margin: 7px 0; border-radius: 10px; border: 1px solid #52617a; font-size: 16px; }
+    .password-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+    .password-field input { min-width: 0; }
+    .password-field button { width: auto; }
     select { background: #0f1b2d; color: #eef2ff; }
     button, a { display: block; text-align: center; text-decoration: none; background: #6ee7b7; color: #08251d; font-weight: 800; cursor: pointer; }
     button.secondary { background: transparent; color: #eef2ff; }
@@ -39,9 +42,9 @@
     @keyframes connection-blink { 50% { opacity: .25; } }
     #start-view { display: flex; flex-direction: column; }
     #start-view[hidden] { display: none; }
-    .home-hero { position: relative; margin: clamp(-52px, -12vw, -38px) 0 14px; }
+    .home-hero { position: relative; margin: clamp(-52px, -12vw, -38px) 0 14px; pointer-events: none; }
     .home-pcb-logo { display: none; }
-    .home-brand-logo { position: absolute; top: clamp(16px, 6vw, 24px); right: clamp(28px, 10vw, 40px); display: block; width: clamp(84px, 22vw, 104px); height: clamp(84px, 22vw, 104px); object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 10px 18px #0008); }
+    .home-brand-logo { position: absolute; top: clamp(16px, 6vw, 24px); right: clamp(28px, 10vw, 40px); display: block; width: clamp(84px, 22vw, 104px); height: clamp(84px, 22vw, 104px); object-fit: contain; image-rendering: pixelated; filter: drop-shadow(0 10px 18px #0008); pointer-events: none !important; }
     .home-hero-copy { min-width: 0; }
     .home-eyebrow { position: relative; top: clamp(34px, 11.5vw, 46px); margin: 0 0 8px; color: #6ee7b7; font: 800 12px/1.3 ui-monospace, monospace; letter-spacing: .08em; }
     .home-title { margin: clamp(48px, 14vw, 72px) 0 0; max-width: none; font-size: clamp(20px, 5.5vw, 30px); font-weight: 700; line-height: 1.22; letter-spacing: -.035em; color: #6ee7b7; }
@@ -91,7 +94,11 @@
       background: transparent; color: #6ee7b7; font-size: 13px; }
     #home-found-device { width: 100%; margin: 14px 0 0; padding: 12px 14px;
       background: #0f2d2a; border-color: #6ee7b7; color: #d1fae5; }
-    #home-found-detail { color: #6ee7b7; font-weight: 800; }
+    #home-found-detail { display: grid; gap: 5px; margin: 5px 0; color: #6ee7b7; font-weight: 800; }
+    .home-found-row { display: flex; justify-content: space-between; gap: 10px; text-align: left; }
+    .home-found-row > span { min-width: 0; overflow-wrap: anywhere; }
+    .home-found-row small { color: #a7f3d0; font-weight: 500; white-space: nowrap; }
+    #home-found-manage-hint { display: block; margin-top: 7px; color: #d1fae5; text-align: right; }
     .home-action-hint { margin: 4px 0 10px; color: #aebbd0; font-size: 13px; line-height: 1.5; }
     .quick-start { display: grid; gap: 8px; margin: 12px 0 16px; padding: 0; list-style: none; }
     .quick-start li { display: grid; grid-template-columns: 34px 42px minmax(0, 1fr); gap: 10px;
@@ -143,8 +150,14 @@
       padding: 10px 12px; border: 1px solid #f59e0b; border-radius: 10px;
       background: #2b2114; color: #fde68a; font-size: 13px; }
     #controller-warning button { width: auto; margin: 0; padding: 8px 12px; font-size: 13px; }
+    .controller-mode { margin: 8px 0 12px; padding: 10px 12px; border: 1px solid #52617a;
+      border-radius: 10px; background: #0f1b2d; }
+    .controller-mode-actions { display: grid; grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px; align-items: center; margin-top: 7px; }
+    .controller-mode-actions select, .controller-mode-actions button { width: 100%; margin: 0; }
     .gamepad { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; align-items: center; }
     .gamepad button { aspect-ratio: 1; margin: 0; padding: 4px; touch-action: none; user-select: none; }
+    .gamepad .a, .gamepad .b { font-size: 12px; letter-spacing: -.04em; white-space: nowrap; }
     .gamepad .up { grid-column: 2; } .gamepad .a { grid-column: 4; grid-row: 2; }
     .gamepad .left { grid-column: 1; grid-row: 2; } .gamepad .down { grid-column: 2; grid-row: 2; }
     .gamepad .right { grid-column: 3; grid-row: 2; } .gamepad .b { grid-column: 5; grid-row: 2; }
@@ -166,6 +179,10 @@
     #storage-summary { margin: 2px 0 8px; color: #aebbd0; font-size: 13px; }
     #midi-cover-preview { display: block; width: 128px; height: 128px; margin: 12px auto; image-rendering: pixelated; border-radius: 50%; }
     #midi-track-list { display: grid; gap: 8px; margin: 10px 0; }
+    #midi-preview-progress { margin: 8px 0 12px; padding: 9px 10px; border: 1px solid #52617a;
+      border-radius: 10px; background: #0f1b2d; }
+    #midi-preview-progress label { display: flex; justify-content: space-between; gap: 12px; margin: 0; }
+    #midi-preview-seek { width: 100%; margin: 7px 0 0; accent-color: #6ee7b7; }
     .midi-track { display: grid; grid-template-columns: 26px 32px 1fr 32px 34px 34px 34px; gap: 6px; align-items: center; }
     .midi-track input, .midi-track button { margin: 0; min-width: 0; padding: 9px 6px; }
     .midi-track span { text-align: center; color: #aebbd0; }
@@ -217,6 +234,12 @@
       border: 1px solid #52617a; border-radius: 10px; background: #0f1b2d; color: #eef2ff;
       font: 13px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace; resize: vertical; }
     #cart-paste-size { margin: 0 0 4px; color: #aebbd0; font-size: 12px; }
+    .cart-draft-recovery { margin: 8px 0; padding: 10px 12px; border: 1px solid #52617a;
+      border-radius: 10px; background: #0f1b2d; }
+    .cart-draft-recovery p { margin: 0 0 8px; color: #d7e0ef; }
+    .cart-draft-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .cart-draft-actions button { width: auto; margin: 0; padding: 7px 10px; }
+    .cart-draft-hint { display: block; margin: 4px 0 8px; color: #aebbd0; }
     .connect-divider { margin: 16px 0 6px; border: 0; border-top: 1px solid #52617a; }
     #provision-result { margin: 14px 0 0; padding: 12px; border-radius: 10px;
       border: 1px solid #52617a; background: #0f1b2d; }
@@ -226,14 +249,33 @@
     #go-to-device { margin: 10px 0 2px; }
     #scan-status { min-height: 1em; margin: 0 0 4px; color: #aebbd0; font-size: 13px; }
     #scan-progress { width: 100%; height: 6px; margin: 6px 0; accent-color: #6ee7b7; }
-    .scan-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
-    .scan-actions button { margin: 7px 0; }
-    .scan-actions button:only-child { grid-column: 1 / -1; }
-    #scan-prefix-row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
-    #scan-prefix-row input { margin: 7px 0; }
-    #scan-prefix-row button { width: auto; margin: 7px 0; padding: 8px 12px; }
+    #scan-progress[hidden] { display: none; }
+    #device-address-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; align-items: center; }
+    #device-address-row input { margin: 7px 0; }
     .device-card { margin: 18px 0; padding: 16px; border: 1px solid #6ee7b7; border-radius: 12px; background: #0f1b2d; }
     .device-card h2 { margin: 0 0 10px; color: #6ee7b7; }
+    .device-switcher { margin: 0 0 12px; padding: 10px 12px; border: 1px solid #52617a;
+      border-radius: 10px; background: #0f1b2d; }
+    .device-switcher > strong { display: block; margin-bottom: 8px; }
+    #active-device-label { margin: 0 0 8px; color: #aebbd0; font-size: 13px; overflow-wrap: anywhere; }
+    .device-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; margin-bottom: 8px; }
+    .device-list button { min-width: 0; margin: 0; padding: 9px 10px; overflow-wrap: anywhere;
+      background: transparent; color: #eef2ff; text-align: left; }
+    .device-list button[aria-pressed="true"] { border-color: #6ee7b7; background: #12352f; }
+    .device-switcher-actions { display: flex; gap: 8px; }
+    .device-switcher-actions button { width: auto; margin: 0; padding: 8px 10px; }
+    .device-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; }
+    .device-entry button { min-width: 0; margin: 0; padding: 9px 10px; overflow-wrap: anywhere; }
+    .device-entry .device-remove { width: auto; border-color: #7f3846; background: transparent;
+      color: #fecdd3; font-size: 13px; }
+    .device-management { margin: 18px 0; padding: 14px 16px; border: 1px solid #52617a;
+      border-radius: 12px; background: #111d30; }
+    .device-management > h2 { margin: 0 0 8px; color: #6ee7b7; font-size: 18px; }
+    .device-management .device-switcher { margin: 0; padding: 0; border: 0; background: transparent; }
+    .device-management > .panel { margin: 10px 0 0; padding: 10px 0 0; border: 0;
+      border-top: 1px solid #52617a; border-radius: 0; background: transparent; }
+    .device-management > .panel h3 { margin: 0 0 10px; color: #6ee7b7; font-size: 16px; }
+    #toggle-device-discovery { margin: 10px 0 0; background: transparent; color: #6ee7b7; }
     .device-grid { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; margin: 0; }
     .device-grid dt { color: #aebbd0; } .device-grid dd { margin: 0; overflow-wrap: anywhere; }
     small { color: #aebbd0; }
@@ -892,7 +934,8 @@
     <p class="home-intro" data-i18n="homeIntro"></p>
     <button id="home-found-device" type="button" hidden>
       <span data-i18n="homeFoundDevice"></span>
-      <strong id="home-found-detail"></strong>
+      <span id="home-found-detail"></span>
+      <small id="home-found-manage-hint" data-i18n="homeOpenManageHint"></small>
     </button>
     <details id="home-setup" class="home-section" open>
       <summary data-i18n="setupOnHomeHeading"></summary>
@@ -918,7 +961,10 @@
         <label for="ssid" data-i18n="ssidLabel"></label>
         <input id="ssid" maxlength="32" autocomplete="off" data-i18n-placeholder="ssidPlaceholder">
         <label for="password" data-i18n="passwordLabel"></label>
-        <input id="password" maxlength="63" type="password" data-i18n-placeholder="passwordPlaceholder">
+        <div class="password-field">
+          <input id="password" maxlength="63" type="password" data-i18n-placeholder="passwordPlaceholder">
+          <button id="show-password" class="secondary" type="button"></button>
+        </div>
         <small data-i18n="volumeTip"></small>
         <button id="send" type="button" data-i18n="sendButton"></button>
         <button id="stop" class="secondary" type="button" hidden data-i18n="stopButton"></button>
@@ -979,25 +1025,31 @@
   </section>
   <section id="device-view" class="view" hidden>
     <h1 data-i18n="manageHeading"></h1>
-    <details id="device-connect-panel" class="panel" open>
-      <summary data-i18n="connectPanelHeading"></summary>
-      <label for="manual-host" data-i18n="manualHostLabel"></label>
-      <input id="manual-host" inputmode="url" autocomplete="off" placeholder="192.168.1.36">
-      <button id="connect-host" type="button" data-i18n="connectHost"></button>
-      <hr class="connect-divider">
-      <p id="scan-status" data-i18n="scanIdle" hidden></p>
-      <label for="scan-prefix" data-i18n="scanPrefixLabel"></label>
-      <div id="scan-prefix-row">
-        <input id="scan-prefix" inputmode="numeric" autocomplete="off"
-               placeholder="192.168.1." data-i18n-placeholder="scanPrefixPlaceholder">
-        <button id="scan-prefix-go" class="secondary" type="button" data-i18n="scanPrefixGo"></button>
-      </div>
-      <div class="scan-actions">
-        <button id="scan-lan" type="button" data-i18n="scanLan"></button>
-        <button id="scan-stop" class="secondary" type="button" data-i18n="scanStop" hidden></button>
-      </div>
-      <progress id="scan-progress" max="256" value="0" hidden></progress>
-    </details>
+    <section id="device-management" class="device-management">
+      <h2 data-i18n="deviceManageHeading"></h2>
+      <section id="device-switcher" class="device-switcher" hidden>
+        <strong data-i18n="deviceListHeading"></strong>
+        <p id="active-device-label"></p>
+        <div id="device-list" class="device-list" role="group" aria-label="PixelToy devices" hidden></div>
+      </section>
+      <button id="toggle-device-discovery" class="secondary" type="button"
+              data-i18n="findOtherDevice" hidden></button>
+      <section id="device-discovery-panel" class="panel">
+        <h3 data-i18n="connectPanelHeading"></h3>
+        <label for="device-address" data-i18n="deviceAddressLabel"></label>
+        <div id="device-address-row">
+          <input id="device-address" inputmode="url" autocomplete="off"
+                 placeholder="192.168.1. / 192.168.1.2" data-i18n-placeholder="deviceAddressPlaceholder">
+        </div>
+        <div class="device-switcher-actions">
+          <button id="scan-other-devices" type="button" data-i18n="scanOtherDevices"></button>
+          <button id="connect-host" type="button" data-i18n="connectHost"></button>
+          <button id="stop-device-scan" class="secondary" type="button" data-i18n="scanStop" hidden></button>
+        </div>
+        <p id="scan-status" data-i18n="scanIdle" hidden></p>
+        <progress id="scan-progress" max="256" value="0" hidden></progress>
+      </section>
+    </section>
     <section id="device-card" class="device-card" hidden>
       <h2 data-i18n="deviceFound"></h2>
       <dl class="device-grid">
@@ -1040,6 +1092,12 @@
           </select>
           <button id="ai-copy-prompt" type="button" data-i18n="aiCopyPrompt"></button>
         </div>
+        <div class="ai-template-row">
+          <label for="ai-preset-source" data-i18n="aiPresetSourceLabel"></label>
+          <select id="ai-preset-source">
+            <option value="" data-i18n="aiPresetSourceNone"></option>
+          </select>
+        </div>
         <p class="ai-prompt-doc"><small data-i18n="aiPromptHint"></small>
           <a href="https://www.lexaloffle.com/dl/docs/pico-8_manual.html" target="_blank"
             rel="noopener noreferrer" data-i18n="aiPromptDocsLink"></a>
@@ -1061,6 +1119,14 @@
         <p id="cart-paste-size"></p>
         <textarea id="cart-paste" spellcheck="false"
           data-i18n-placeholder="cartPastePlaceholder"></textarea>
+        <section id="cart-draft-recovery" class="cart-draft-recovery" role="status" aria-live="polite" hidden>
+          <p data-i18n="cartDraftFound"></p>
+          <div class="cart-draft-actions">
+            <button id="restore-cart-draft" class="secondary" type="button" data-i18n="restoreCartDraft"></button>
+            <button id="delete-cart-draft" class="secondary" type="button" data-i18n="deleteCartDraft"></button>
+          </div>
+        </section>
+        <small class="cart-draft-hint" data-i18n="cartDraftAutosaveHint"></small>
         <button id="load-builtin-reversi" class="secondary" type="button" data-i18n="loadBuiltinReversi"></button>
         <small data-i18n="builtinGamePreviewHint"></small>
         <button id="run-cart-paste" type="button" data-i18n="runCartPaste" disabled></button>
@@ -1079,6 +1145,11 @@
           <small id="midi-capacity-summary"></small>
         </section>
         <div id="midi-track-list"></div>
+        <section id="midi-preview-progress" hidden>
+          <label for="midi-preview-seek"><span data-i18n="midiPreviewProgress"></span>
+            <output id="midi-preview-time">0:00 / 0:00</output></label>
+          <input id="midi-preview-seek" type="range" min="0" max="0" step="0.1" value="0">
+        </section>
         <section id="midi-bulk" class="midi-bulk" hidden>
           <small id="midi-remove-preview"></small>
           <button id="select-all-midi" class="secondary" type="button" data-i18n="midiSelectAll"></button>
@@ -1207,6 +1278,20 @@
         <span id="controller-warning-text" data-i18n="controllerRefreshHint"></span>
         <button type="button" data-i18n="refreshNow"></button>
       </section>
+      <section class="controller-mode">
+        <label for="controller-device-mode" data-i18n="deviceModeLabel"></label>
+        <div class="controller-mode-actions">
+          <select id="controller-device-mode">
+            <option value="0" data-i18n="deviceModeOnline"></option>
+            <option value="2" data-i18n="deviceModeP1"></option>
+            <option value="3" data-i18n="deviceModeP2"></option>
+            <option value="1" data-i18n="deviceModeOffline"></option>
+          </select>
+          <button id="controller-mode-apply" class="secondary" type="button"
+                  data-i18n="deviceModeApply"></button>
+        </div>
+        <small data-i18n="deviceModeDisconnectHint"></small>
+      </section>
       <p><small data-i18n="controllerHint"></small></p>
       <div class="controllers">
         <div class="controller-card">
@@ -1216,19 +1301,19 @@
             <button class="left" type="button" data-player="0" data-bit="0" aria-label="Player 1 Left">←</button>
             <button class="down" type="button" data-player="0" data-bit="3" aria-label="Player 1 Down">↓</button>
             <button class="right" type="button" data-player="0" data-bit="1" aria-label="Player 1 Right">→</button>
-            <button class="a" type="button" data-player="0" data-bit="4">A</button>
-            <button class="b" type="button" data-player="0" data-bit="5">B</button>
+            <button class="a" type="button" data-player="0" data-bit="4">Z(A)</button>
+            <button class="b" type="button" data-player="0" data-bit="5">X(B)</button>
           </div>
         </div>
         <div class="controller-card">
           <h3>Player 2</h3>
           <div class="gamepad">
-            <button class="up" type="button" data-player="1" data-bit="2" aria-label="Player 2 Up">↑</button>
-            <button class="left" type="button" data-player="1" data-bit="0" aria-label="Player 2 Left">←</button>
-            <button class="down" type="button" data-player="1" data-bit="3" aria-label="Player 2 Down">↓</button>
-            <button class="right" type="button" data-player="1" data-bit="1" aria-label="Player 2 Right">→</button>
-            <button class="a" type="button" data-player="1" data-bit="4">A</button>
-            <button class="b" type="button" data-player="1" data-bit="5">B</button>
+            <button class="up" type="button" data-player="1" data-bit="2" aria-label="Player 2 Up (W)">W</button>
+            <button class="left" type="button" data-player="1" data-bit="0" aria-label="Player 2 Left (A)">A</button>
+            <button class="down" type="button" data-player="1" data-bit="3" aria-label="Player 2 Down (S)">S</button>
+            <button class="right" type="button" data-player="1" data-bit="1" aria-label="Player 2 Right (D)">D</button>
+            <button class="a" type="button" data-player="1" data-bit="4">F(A)</button>
+            <button class="b" type="button" data-player="1" data-bit="5">G(B)</button>
           </div>
         </div>
       </div>
@@ -2836,7 +2921,12 @@ end`;
       homeTitleLine2: '还有朋友，都装进这块像素世界里',
       homeIntro: '基于 ESP32-S3 的 AI 创作像素玩具。连上 Wi‑Fi 就能推送游戏卡带，也能上传素材制作 MIDI 音乐卡带和 GIF 动态壁纸卡带；切换本地模式后，还能与朋友面对面双人同玩。',
       switchHttpsPage: 'PC 端需切换 HTTPS 访问',
-      homeFoundDevice: '检测到设备：',
+      homeFoundDevice: '已发现的设备：',
+      homeOpenManageHint: '点此进入设备管理 →', homeDeviceCurrent: '当前连接',
+      homeDeviceOnline: '在线设备', homeDeviceChecking: '正在检测…', homeDeviceOffline: '掉线设备',
+      homeDeviceOfflineWithTime: '掉线设备 · {time}', homeDeviceSeenNow: '刚刚',
+      homeDeviceSeenMinutes: '{count} 分钟前', homeDeviceSeenHours: '{count} 小时前',
+      homeDeviceSeenDays: '{count} 天前',
       setupOnHomeHeading: '首次使用：三步开始',
       homeActionHint: '按下面的步骤完成首次使用，连接成功后即可运行卡带。',
       commonFaqTitle: '常见问题 FAQ',
@@ -2844,9 +2934,9 @@ end`;
       hardwareControlsIntro: '这里介绍机身实体按键，以及按键操作后屏幕会显示什么。',
       physicalButtonsHeading: '游戏按键',
       physicalGameButtons: '左右键控制向左、向右；A、B 执行当前卡带定义的操作。',
-      bootButtonActions: 'BOOT 键：双击切换模式，三击进入配网；长按约 2.5 秒关机。联网模式下首次双击进入 OFFLINE，之后依次切换到 P1 HOST、P2 CLIENT，再回到 OFFLINE。配网界面单击会退出并重启到联网模式。切换后的屏幕会短暂显示 MODE 和当前模式。',
+      bootButtonActions: 'BOOT 键：双击切换模式，三击进入配网；长按约 2.5 秒关机。联网模式下首次双击进入 P1 HOST，之后依次切换到 P2 CLIENT、OFFLINE，再回到 P1 HOST。配网界面单击会退出并重启到联网模式。切换后的屏幕会短暂显示 MODE 和当前模式。',
       pairingHeading: '本地双人',
-      pairingStepOne: '用两台设备分别切换到 P1 HOST 和 P2 CLIENT：反复双击 BOOT，直到屏幕短暂显示目标角色；每次切换后设备都会重启。从联网模式开始时，首次双击会先进入 OFFLINE。',
+      pairingStepOne: '用两台设备分别切换到 P1 HOST 和 P2 CLIENT：反复双击 BOOT，直到屏幕短暂显示目标角色；每次切换后设备都会重启。从联网模式开始时，首次双击进入 P1 HOST。',
       pairingStepTwo: '在 P1 HOST 上运行支持双人的卡带。P2 CLIENT 连接后会显示同一画面，第二位玩家用 P2 设备的左右键和 A、B 操作。无需路由器或互联网。',
       screenStatusHeading: '屏幕状态怎么看',
       provisionScreenStatus: '三击后短暂显示 PROVISION / ONLINE，随后显示二维码与 PROVISION / WAITING。播放配网声音时会显示 AUDIO / RECEIVING、CONFIG / RECEIVED、WIFI / CONNECTING；成功显示 WIFI / CONNECTED。失败时显示 CONNECT / FAILED、AUDIO / TIMEOUT 或 AUDIO CRC / FAILED，之后回到 WAITING，可重试。',
@@ -2857,7 +2947,7 @@ end`;
       quickStartDeviceBody: '设备联网后，打开“设备与内容”并连接设备。',
       quickStartRunTitle: '运行卡带',
       quickStartRunBody: '选择一个卡带，点击运行。',
-      ssidLabel: 'Wi‑Fi 名称', passwordLabel: 'Wi‑Fi 密码',
+      ssidLabel: 'Wi‑Fi 名称', passwordLabel: 'Wi‑Fi 密码', showPassword: '显示', hidePassword: '隐藏',
       homeGuideTitle: '什么是 PICO‑8？',
       pico8Intro: 'PICO‑8 是一款复古风像素“幻想主机”：自带 128×128 屏幕与 16 色调色板，使用 Lua 编写游戏，单文件即一个卡带。PicoPico 兼容 PICO‑8 卡带，可以直接在设备上运行社区创作或自行制作的卡带。',
       pico8OfficialSite: 'PICO‑8 官方首页',
@@ -2878,23 +2968,35 @@ end`;
       connReconnecting: '设备断开，正在重连…',
       setupSuccess: '{name} 已联网，网页已连接设备。',
       setupFailed: '暂未找到设备。请确认设备和手机或电脑连接着同一 Wi‑Fi，或使用下方设备热点。',
-      manageHeading: '设备与内容', connectPanelHeading: '连接设备',
+      manageHeading: '设备与内容', deviceManageHeading: '设备管理', connectPanelHeading: '连接设备',
       manualHostLabel: '设备局域网 IP 或 .local 地址',
+      deviceAddressLabel: '设备 IP、.local 地址或网段前缀',
+      deviceAddressPlaceholder: '192.168.1. / 192.168.1.2 / pixeltoy.local',
+      findOtherDevice: '查找或连接其他设备',
       connectHost: '连接设备',
       autoFinding: '正在自动查找设备…',
       autoFindFailed: '自动查找未找到设备，可手动输入 IP 或扫描局域网。',
-      scanIdle: '设备 IP 可能变化时，可扫描上一次成功所在的网段（192.168.aaa.0–255）。',
-      scanPrefixLabel: '或指定要扫描的网段前缀',
+      scanIdle: '设备 IP 可能变化时，可扫描任意私有 IPv4 的 /24 网段。',
+      scanPrefixLabel: '网段前缀（留空自动扫描）',
       scanPrefixPlaceholder: '192.168.1.',
-      scanPrefixGo: '扫描该网段',
-      scanLan: '扫描局域网（自动选择网段）',
       scanStop: '停止扫描',
       scanRunning: '正在扫描 {range}：已探测 {done}/{total}，请稍候……',
       scanChecking: '正在确认候选网段：{ranges}',
       scanCancelled: '扫描已取消。',
       scanFailed: '未在扫描范围内发现设备。可手动输入 IP，或确认设备已连接同一 Wi-Fi。',
-      invalidScanPrefix: '网段前缀格式应为 192.168.aaa. 或 192.168.aaa.',
+      invalidScanPrefix: '请输入私有 IPv4 的 /24 前缀，例如 192.168.1.、172.20.10. 或 10.0.0.',
       scanFound: '扫描到设备：{name}（{ip}），已记录该网段。',
+      deviceListHeading: '已发现并选中的设备', scanOtherDevices: '扫描设备',
+      scanDevicesProgress: '正在扫描 {range}：已探测 {done}/{total}，找到 {count} 台设备……',
+      scanDevicesFound: '设备列表已更新，共 {count} 台；当前设备未改变。',
+      scanDevicesNone: '没有发现其他设备，当前设备保持不变。',
+      deviceSwitched: '已切换到 {name}（{ip}）。',
+      deviceSwitchFailed: '无法连接 {name}：{error}',
+      deviceLimitReached: '网页设备列表最多保留 2 台，请先移除设备再扫描。',
+      removeDevice: '移除', deviceRemoved: '已从网页设备列表移除 {name}。',
+      activeDeviceLabel: '当前设备：{name} · {id} · {ip}',
+      noDeviceSelected: '尚未选中可操作的设备，请从列表选择或扫描设备。',
+      otherDeviceAvailable: '检测到其他设备：{name}（{id}）。主动扫描后可将它加入设备列表。',
       volumeTip: '请将媒体音量调到 30% ~ 50% 左右，并让手机扬声器靠近设备。',
       ssidPlaceholder: '2.4 GHz Wi-Fi 名称', passwordPlaceholder: 'Wi-Fi 密码',
       sendButton: '播放声音连接设备（最多 5 次）', stopButton: '停止播放',
@@ -2917,6 +3019,13 @@ end`;
       secondsValue: '{seconds} 秒 / {attempts} 次',
       invalidHost: '请输入私有局域网 IP 或 .local 地址',
       controllerHeading: '游戏控制器', openController: '🎮 控制器', closeController: '关闭',
+      deviceModeLabel: '设备运行模式', deviceModeOnline: '联网模式',
+      deviceModeP1: 'P1 主机', deviceModeP2: 'P2 客户端', deviceModeOffline: '离线模式',
+      deviceModeApply: '切换',
+      deviceModeDisconnectHint: '切换模式会重启设备。网页将失去连接，且不能再控制硬件；需要三击设备 BOOT 键进入配网，再单击退出，才能返回联网模式并恢复网页控制。',
+      deviceModeConfirm: '确定切换到“{mode}”吗？设备会重启，网页将失去连接，并且不能再控制硬件。',
+      deviceModeSwitching: '正在切换到“{mode}”并重启。网页已断开，当前不能控制硬件。',
+      deviceModeSwitchFailed: '设备模式切换失败：{error}',
       dismissStatus: '关闭提示',
       controllerRefreshHint: '控制器没有响应：设备可能已断开或正在重启。',
       autoReconnecting: '设备失去连接，正在自动重新查找……',
@@ -2925,7 +3034,7 @@ end`;
       createCartBoard: '创作卡带', createCartBoardHint: '制作游戏、音乐与动态壁纸卡带',
       manageCartBoard: '管理卡带', manageCartBoardHint: '浏览示例卡带，管理设备内容',
       gameCartCreate: '游戏卡带创作', wallpaperCartCreate: '壁纸卡带生成',
-      controllerHint: 'Player 1：方向键、Z、X；Player 2：W、A、S、D、F、G。',
+      controllerHint: 'P1：方向键、Z(A)、X(B)；P2：W/A/S/D 移动，F(A)、G(B) 操作。',
       bootHold: '按住 1 秒返回内置菜单', booting: '设备正在重启并返回内置菜单……',
       controllerFailed: '控制器连接失败：{error}',
       midiHeading: '音乐卡带生成', loadBuiltinMidi: '载入示例 MIDI《简单爱》',
@@ -2940,6 +3049,7 @@ end`;
       downloadMidiCart: '生成并下载 .p8', pushMidiCart: '生成并推送到设备',
       previewMidi: '近似试听',
       stopPreviewMidi: '停止',
+      midiPreviewProgress: '试听进度',
       previewingMidi: '正在试听，音色为近似合成…',
       noMidiToPreview: '请先添加并等待 MIDI 分析完成',
       processingMidi: '正在压缩 MIDI 和处理封面……',
@@ -2969,8 +3079,11 @@ end`;
       builtinGameLoadFailed: '载入《{name}》失败：{error}',
       noDeviceConnected: '请先在“设备与内容”连接 PixelToy，再选择卡带。',
       aiCartHeading: '用 AI 创作卡带',
-      aiCartHint: '选择一个玩法起点并复制提示词，让 AI 生成卡带。生成的是新的简化作品，不会自动复刻内置卡带；粘贴后可先做基础校验再推送。',
+      aiCartHint: '选择玩法模板生成新卡带，或选择预置卡带并附上源码，让 AI 以它为基础复刻；粘贴后可先做基础校验再推送。',
       aiTemplateLabel: '卡带玩法模板',
+      aiPresetSourceLabel: '复刻预置卡带',
+      aiPresetSourceNone: '不使用预置源码',
+      aiPresetSourceFailed: '生成复刻提示词失败：{error}',
       aiCopyPrompt: '复制提示词',
       aiPromptHint: '复制的提示词会附上官方 PICO‑8 API 文档，方便 AI 参考：',
       aiPromptDocsLink: 'PICO‑8 官方 API 文档',
@@ -2991,6 +3104,10 @@ end`;
       cartPasteLuaTooLarge: '粘贴的 Lua 代码超过 65534 字节（当前 {size} 字节）',
       cartPasteWrapped: '已将纯 Lua 代码封装为 Cart（{size} 字节）并上传，设备正在重启。',
       cartPasteUploaded: '粘贴的 Cart 已上传，设备正在重启。',
+      cartDraftFound: '发现上次编辑的游戏卡带草稿。',
+      restoreCartDraft: '恢复草稿', deleteCartDraft: '删除草稿',
+      cartDraftAutosaveHint: '编辑内容会自动保存在当前浏览器。',
+      cartDraftRestored: '游戏卡带草稿已恢复。', cartDraftDeleted: '本地游戏卡带草稿已删除。',
       pastePreviewBytes: '{kind} · {size} 字节',
       pasteKindLua: 'Lua 代码',
       pasteKindCart: '完整 Cart',
@@ -3045,7 +3162,12 @@ end`;
       homeTitleLine2: 'plus friends, all in this pixel world.',
       homeIntro: 'An ESP32-S3 pixel toy for AI-assisted creation. Connect to Wi-Fi to send game Carts, or upload media to make MIDI music Carts and GIF animated wallpaper Carts. Switch to local mode to play face-to-face with a friend.',
       switchHttpsPage: 'PC: Switch to HTTPS for access',
-      homeFoundDevice: 'Device detected:',
+      homeFoundDevice: 'Known devices:',
+      homeOpenManageHint: 'Open device management →', homeDeviceCurrent: 'Connected now',
+      homeDeviceOnline: 'Online', homeDeviceChecking: 'Checking…', homeDeviceOffline: 'Offline',
+      homeDeviceOfflineWithTime: 'Offline · {time}', homeDeviceSeenNow: 'just now',
+      homeDeviceSeenMinutes: '{count} min ago', homeDeviceSeenHours: '{count} hr ago',
+      homeDeviceSeenDays: '{count} day(s) ago',
       setupOnHomeHeading: 'Get started in 3 steps',
       homeActionHint: 'Follow the steps below to get started, then run a Cart once connected.',
       commonFaqTitle: 'Frequently asked questions',
@@ -3053,9 +3175,9 @@ end`;
       hardwareControlsIntro: 'This guide covers the physical buttons and the screen messages they trigger.',
       physicalButtonsHeading: 'Game buttons',
       physicalGameButtons: 'Left and right move in those directions; A and B perform the actions defined by the current Cart.',
-      bootButtonActions: 'BOOT: double-click to cycle modes, triple-click to enter setup, or hold for about 2.5 seconds to power off. From online mode, the first double-click selects OFFLINE; further double-clicks cycle through P1 HOST, P2 CLIENT, then OFFLINE. On the setup screen, a single click exits and restarts in online mode. After a mode change, the screen briefly shows MODE and the selected mode.',
+      bootButtonActions: 'BOOT: double-click to cycle modes, triple-click to enter setup, or hold for about 2.5 seconds to power off. From online mode, the first double-click selects P1 HOST; further double-clicks cycle through P2 CLIENT, OFFLINE, then P1 HOST. On the setup screen, a single click exits and restarts in online mode. After a mode change, the screen briefly shows MODE and the selected mode.',
       pairingHeading: 'Local two-player play',
-      pairingStepOne: 'Set one device to P1 HOST and the other to P2 CLIENT: keep double-clicking BOOT until the screen briefly shows the desired role. The device restarts after each change. From online mode, the first double-click selects OFFLINE.',
+      pairingStepOne: 'Set one device to P1 HOST and the other to P2 CLIENT: keep double-clicking BOOT until the screen briefly shows the desired role. The device restarts after each change. From online mode, the first double-click selects P1 HOST.',
       pairingStepTwo: 'Run a two-player Cart on P1 HOST. Once connected, P2 CLIENT mirrors its screen; the second player uses the left/right and A/B buttons on the P2 device. No router or internet connection is needed.',
       screenStatusHeading: 'Reading the screen',
       provisionScreenStatus: 'After three clicks, the screen briefly shows PROVISION / ONLINE, then a QR code with PROVISION / WAITING. During audio setup it shows AUDIO / RECEIVING, CONFIG / RECEIVED, and WIFI / CONNECTING; success shows WIFI / CONNECTED. Errors show CONNECT / FAILED, AUDIO / TIMEOUT, or AUDIO CRC / FAILED, then return to WAITING for another try.',
@@ -3066,7 +3188,7 @@ end`;
       quickStartDeviceBody: 'Once online, open “Device & content” and connect to it.',
       quickStartRunTitle: 'Run a Cart',
       quickStartRunBody: 'Choose a Cart and select Run.',
-      ssidLabel: 'Wi‑Fi name', passwordLabel: 'Wi‑Fi password',
+      ssidLabel: 'Wi‑Fi name', passwordLabel: 'Wi‑Fi password', showPassword: 'Show', hidePassword: 'Hide',
       homeGuideTitle: 'What is PICO‑8?',
       pico8Intro: 'PICO‑8 is a retro-style “fantasy console”: a 128×128 screen, a 16-color palette, Lua-based game coding, and one file per Cart. PicoPico is compatible with PICO‑8 Carts, so community-made or your own Carts can run directly on the device.',
       pico8OfficialSite: 'Official PICO‑8 site',
@@ -3087,23 +3209,35 @@ end`;
       connReconnecting: 'Device lost, reconnecting…',
       setupSuccess: '{name} is online and connected to this page.',
       setupFailed: 'Device not found yet. Make sure it and your phone or computer use the same Wi-Fi, or use the device hotspot below.',
-      manageHeading: 'Device & content', connectPanelHeading: 'Connect device',
+      manageHeading: 'Device & content', deviceManageHeading: 'Device management', connectPanelHeading: 'Connect device',
       manualHostLabel: 'Local device IP or .local address',
+      deviceAddressLabel: 'Device IP, .local address, or subnet prefix',
+      deviceAddressPlaceholder: '192.168.1. / 192.168.1.2 / pixeltoy.local',
+      findOtherDevice: 'Find or connect another device',
       connectHost: 'Connect device',
       autoFinding: 'Auto-finding the device…',
       autoFindFailed: 'Auto-find found nothing. Enter the IP or scan the LAN manually.',
-      scanIdle: 'If the device IP changed, scan its last known subnet (192.168.aaa.0–255).',
-      scanPrefixLabel: 'Or scan a specific subnet prefix',
+      scanIdle: 'If the device IP changed, scan any private IPv4 /24 subnet.',
+      scanPrefixLabel: 'Subnet prefix (leave blank to scan automatically)',
       scanPrefixPlaceholder: '192.168.1.',
-      scanPrefixGo: 'Scan this subnet',
-      scanLan: 'Scan local network (subnet auto-selected)',
       scanStop: 'Stop scan',
       scanRunning: 'Scanning {range}: {done}/{total} probed…',
       scanChecking: 'Checking candidate subnets: {ranges}',
       scanCancelled: 'Scan cancelled.',
       scanFailed: 'No device found in the scanned range. Enter the IP manually or make sure the device is on the same Wi-Fi.',
-      invalidScanPrefix: 'Prefix must look like 192.168.aaa.',
+      invalidScanPrefix: 'Enter a private IPv4 /24 prefix, such as 192.168.1., 172.20.10., or 10.0.0.',
       scanFound: 'Device found by scan: {name} ({ip}). Subnet remembered.',
+      deviceListHeading: 'Discovered and selected devices', scanOtherDevices: 'Scan for devices',
+      scanDevicesProgress: 'Scanning {range}: {done}/{total} probed, {count} device(s) found…',
+      scanDevicesFound: 'Device list updated: {count} device(s). Current selection is unchanged.',
+      scanDevicesNone: 'No other devices found. The current device is unchanged.',
+      deviceSwitched: 'Switched to {name} ({ip}).',
+      deviceSwitchFailed: 'Could not connect to {name}: {error}',
+      deviceLimitReached: 'The page can list up to 2 devices. Remove one before scanning again.',
+      removeDevice: 'Remove', deviceRemoved: 'Removed {name} from this page’s device list.',
+      activeDeviceLabel: 'Current device: {name} · {id} · {ip}',
+      noDeviceSelected: 'No active device. Select a device from the list or scan for devices.',
+      otherDeviceAvailable: 'Another device was detected: {name} ({id}). Scan for devices to add it to the list.',
       volumeTip: 'Set media volume to about 30% ~ 50% and hold your phone speaker close to the device.',
       ssidPlaceholder: '2.4 GHz Wi-Fi name', passwordPlaceholder: 'Wi-Fi password',
       sendButton: 'Play sound to connect (up to 5 times)', stopButton: 'Stop playback',
@@ -3126,6 +3260,13 @@ end`;
       secondsValue: '{seconds}s / {attempts} attempts',
       invalidHost: 'Enter a private LAN IP or .local address',
       controllerHeading: 'Game controller', openController: '🎮 Controller', closeController: 'Close',
+      deviceModeLabel: 'Device mode', deviceModeOnline: 'Online',
+      deviceModeP1: 'P1 host', deviceModeP2: 'P2 client', deviceModeOffline: 'Offline',
+      deviceModeApply: 'Switch',
+      deviceModeDisconnectHint: 'Changing mode restarts the device. This page will disconnect and can no longer control the hardware. To restore online mode and web control, triple-click BOOT to enter setup, then single-click to exit.',
+      deviceModeConfirm: 'Switch to “{mode}”? The device will restart, this page will disconnect, and it can no longer control the hardware.',
+      deviceModeSwitching: 'Switching to “{mode}” and restarting. This page is disconnected and cannot currently control the hardware.',
+      deviceModeSwitchFailed: 'Could not change device mode: {error}',
       dismissStatus: 'Dismiss',
       controllerRefreshHint: 'The controller is not responding: the device may be offline or rebooting.',
       autoReconnecting: 'Device link lost, reconnecting automatically…',
@@ -3134,7 +3275,7 @@ end`;
       createCartBoard: 'Create Carts', createCartBoardHint: 'Make game, music, and wallpaper Carts',
       manageCartBoard: 'Manage Carts', manageCartBoardHint: 'Browse examples and manage device content',
       gameCartCreate: 'Game Cart creation', wallpaperCartCreate: 'Wallpaper Cart creation',
-      controllerHint: 'Player 1: arrows, Z, X. Player 2: W, A, S, D, F, G.',
+      controllerHint: 'P1: arrows, Z(A), X(B). P2: W/A/S/D to move, F(A), G(B) to act.',
       bootHold: 'Hold for 1 second to open the built-in menu',
       booting: 'Device is restarting into the built-in menu…',
       controllerFailed: 'Controller connection failed: {error}',
@@ -3150,6 +3291,7 @@ end`;
       downloadMidiCart: 'Build and download .p8', pushMidiCart: 'Build and push to device',
       previewMidi: 'Preview (approximate)',
       stopPreviewMidi: 'Stop',
+      midiPreviewProgress: 'Preview progress',
       previewingMidi: 'Previewing with approximate synthesis…',
       noMidiToPreview: 'Add MIDI files and wait for analysis first',
       processingMidi: 'Compressing MIDI and processing the cover…',
@@ -3179,8 +3321,11 @@ end`;
       builtinGameLoadFailed: 'Could not load “{name}”: {error}',
       noDeviceConnected: 'Connect PixelToy under “Device & content” first, then choose a Cart.',
       aiCartHeading: 'Create a Cart with AI',
-      aiCartHint: 'Choose a gameplay starting point and copy the prompt for AI. It creates a new, simplified Cart rather than reproducing a built-in one; paste it below for basic checks before pushing.',
+      aiCartHint: 'Choose a gameplay template for a new Cart, or select a preset Cart to include its source for AI-assisted recreation. Paste the result below for basic checks before pushing.',
       aiTemplateLabel: 'Cart gameplay template',
+      aiPresetSourceLabel: 'Recreate a preset Cart',
+      aiPresetSourceNone: 'No preset source',
+      aiPresetSourceFailed: 'Could not build the recreation prompt: {error}',
       aiCopyPrompt: 'Copy prompt',
       aiPromptHint: 'The copied prompt includes the official PICO-8 API manual for reference:',
       aiPromptDocsLink: 'Official PICO-8 API manual',
@@ -3201,6 +3346,10 @@ end`;
       cartPasteLuaTooLarge: 'Pasted Lua exceeds 65534 bytes (currently {size} bytes)',
       cartPasteWrapped: 'Plain Lua was wrapped as a Cart ({size} bytes) and uploaded. The device is restarting.',
       cartPasteUploaded: 'Pasted Cart uploaded. The device is restarting.',
+      cartDraftFound: 'A game Cart draft from your previous session was found.',
+      restoreCartDraft: 'Restore draft', deleteCartDraft: 'Delete draft',
+      cartDraftAutosaveHint: 'Edits are saved automatically in this browser.',
+      cartDraftRestored: 'Game Cart draft restored.', cartDraftDeleted: 'Local game Cart draft deleted.',
       pastePreviewBytes: '{kind} · {size} bytes',
       pasteKindLua: 'Lua source',
       pasteKindCart: 'Full Cart',
@@ -3270,9 +3419,33 @@ const BUILTIN_GAMES = [{"id":"triple_town","title":"三重镇","fileName":"tripl
   const toolStatusClose = document.getElementById('tool-status-close');
   const deviceCard = document.getElementById('device-card');
   const deviceTools = document.getElementById('device-tools');
+  const DEVICE_LIST_STORAGE_KEY = 'pixeltoy-device-list';
+  const DEVICE_SELECTION_STORAGE_KEY = 'pixeltoy-selected-device';
+  const MAX_KNOWN_DEVICES = 2;
+  let knownDevices = [];
+  try {
+    const storedDevices = JSON.parse(localStorage.getItem(DEVICE_LIST_STORAGE_KEY) || '[]');
+    if (Array.isArray(storedDevices)) {
+      knownDevices = storedDevices.filter(device => typeof device?.id === 'string' &&
+        (normalizeHost(device.ip) || normalizeHost(device.hostname))).slice(0, 4);
+    }
+  } catch (_) {}
+  let selectedDeviceId = localStorage.getItem(DEVICE_SELECTION_STORAGE_KEY) || '';
+  if (!selectedDeviceId) {
+    try {
+      selectedDeviceId = JSON.parse(localStorage.getItem('pixeltoy-device') || '{}').id || '';
+    } catch (_) {}
+  }
+  let deviceSwitchPending = false;
+  let deviceDiscoveryExpanded = false;
   let activeAudio = null;
+  let provisionCheckPending = false;
+  let provisionAttemptId = 0;
   let currentStatus = null;
   let currentBaseUrl = '';
+  const knownDevicePresence = new Map();
+  const knownDevicePresenceFailures = new Map();
+  let knownDevicePresenceChecking = false;
   let midiCoverCache = { file: null, rows: [] };
   const BUILTIN_SIMPLE_LOVE_MIDI_BASE64 =
     `TVRoZAAAAAYAAQAIAeBNVHJrAAAA6AD/Awh1bnRpdGxlZAD/AhtDb3B5cmlnaHQgY6kgMjAwMSBieSCn9bbHuvQA/wEFSVQzMAoA
@@ -4128,14 +4301,14 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     'selectCart', 'noDeviceConnected', 'cartPasteEmpty', 'cartPasteTooLarge',
     'midiBuildFailed', 'selectMidi', 'noMidiToPreview', 'storageActionFailed',
     'invalidCartUrl', 'imageCartNoFile', 'gifWallpaperNoFile', 'gifWallpaperTooLarge',
-    'builtinGameLoadFailed'
+    'builtinGameLoadFailed', 'deviceSwitchFailed', 'deviceModeSwitchFailed'
   ]);
-  const warningStatusKeys = new Set(['scanCancelled', 'gifWallpaperStatic']);
+  const warningStatusKeys = new Set(['scanCancelled', 'gifWallpaperStatic', 'deviceModeSwitching']);
   const successStatusKeys = new Set([
     'connected', 'scanFound', 'cartUploaded', 'midiBuilt', 'storageDeleted',
     'storageUploaded', 'formatDone', 'imageCartConverted', 'imageCartPushed',
     'gifWallpaperConverted', 'gifWallpaperPushed', 'builtinGameLoaded',
-    'cartPasteWrapped', 'cartPasteUploaded'
+    'cartPasteWrapped', 'cartPasteUploaded', 'scanDevicesFound', 'deviceSwitched'
   ]);
   let language = localStorage.getItem('pixeltoy-language') ||
     (navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
@@ -4220,6 +4393,9 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     }
     if (name === 'device') hideProvisionResult();
     currentView = name;
+    renderKnownDevices();
+    if (name === 'device' && !currentBaseUrl && knownDevices.length)
+      deviceTools.hidden = false;
     const controllerLauncher = document.getElementById('controller-launcher');
     controllerLauncher.hidden = name !== 'device' || !homeDeviceAvailable || !currentBaseUrl;
     document.querySelectorAll('.view').forEach(view => {
@@ -4264,14 +4440,106 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     }
   }
 
+  function homeDeviceLastSeenLabel(device) {
+    const seenAt = Date.parse(device.lastSeen || '');
+    if (!Number.isFinite(seenAt)) return '';
+    const elapsedMinutes = Math.max(0, Math.floor((Date.now() - seenAt) / 60000));
+    if (elapsedMinutes < 1) return text('homeDeviceSeenNow');
+    if (elapsedMinutes < 60)
+      return text('homeDeviceSeenMinutes', { count: String(elapsedMinutes) });
+    const elapsedHours = Math.floor(elapsedMinutes / 60);
+    if (elapsedHours < 24)
+      return text('homeDeviceSeenHours', { count: String(elapsedHours) });
+    return text('homeDeviceSeenDays', { count: String(Math.floor(elapsedHours / 24)) });
+  }
+
+  function homeDeviceSeenLabel(device) {
+    if (currentBaseUrl && device.id === selectedDeviceId && connectionState === 'online')
+      return text('homeDeviceCurrent');
+    const presence = knownDevicePresence.get(device.id);
+    if (presence === 'online') return text('homeDeviceOnline');
+    if (presence !== 'offline') return text('homeDeviceChecking');
+    const lastSeen = homeDeviceLastSeenLabel(device);
+    return lastSeen
+      ? text('homeDeviceOfflineWithTime', { time: lastSeen })
+      : text('homeDeviceOffline');
+  }
+
+  function renderHomeFoundDevices() {
+    const banner = document.getElementById('home-found-device');
+    const detail = document.getElementById('home-found-detail');
+    if (!banner || !detail) return;
+    banner.hidden = knownDevices.length === 0;
+    detail.replaceChildren(...knownDevices.map(device => {
+      const row = document.createElement('span');
+      row.className = 'home-found-row';
+      const identity = document.createElement('span');
+      const shortId = String(device.id || '').slice(-4);
+      identity.textContent = `${device.name || 'PixelToy'} · ${shortId} · ${device.ip || device.hostname || '--'}`;
+      const seen = document.createElement('small');
+      seen.textContent = homeDeviceSeenLabel(device);
+      row.append(identity, seen);
+      return row;
+    }));
+  }
+
+  async function refreshKnownDevicePresence() {
+    if (knownDevicePresenceChecking || localDevicePreview ||
+        document.visibilityState !== 'visible' || !knownDevices.length) return;
+    knownDevicePresenceChecking = true;
+    const devices = knownDevices.slice();
+    for (const device of devices) {
+      if (currentBaseUrl && device.id === selectedDeviceId && connectionState === 'online') {
+        knownDevicePresence.set(device.id, 'online');
+        knownDevicePresenceFailures.delete(device.id);
+      } else if (!knownDevicePresence.has(device.id))
+        knownDevicePresence.set(device.id, 'checking');
+    }
+    renderHomeFoundDevices();
+    try {
+      await Promise.allSettled(devices.map(async device => {
+        if (currentBaseUrl && device.id === selectedDeviceId && connectionState === 'online')
+          return;
+        const host = normalizeHost(device.ip) || normalizeHost(device.hostname);
+        if (!host) {
+          knownDevicePresence.set(device.id, 'offline');
+          return;
+        }
+        try {
+          const info = await requestDeviceInfo(baseUrl(host));
+          if (info.id !== device.id) throw new Error('device identity changed');
+          const current = knownDevices.find(item => item.id === device.id);
+          if (current) {
+            current.name = info.name || current.name;
+            current.model = info.model || current.model;
+            current.version = info.version || current.version;
+            current.ip = info.ip || current.ip;
+            current.hostname = info.hostname || current.hostname;
+            current.lastSeen = new Date().toISOString();
+            try {
+              localStorage.setItem(DEVICE_LIST_STORAGE_KEY, JSON.stringify(knownDevices));
+            } catch (_) {}
+          }
+          knownDevicePresenceFailures.delete(device.id);
+          knownDevicePresence.set(device.id, 'online');
+        } catch (_) {
+          const failures = (knownDevicePresenceFailures.get(device.id) || 0) + 1;
+          knownDevicePresenceFailures.set(device.id, failures);
+          knownDevicePresence.set(device.id, failures >= 2 ? 'offline' : 'checking');
+        }
+        renderHomeFoundDevices();
+      }));
+    } finally {
+      knownDevicePresenceChecking = false;
+      renderHomeFoundDevices();
+    }
+  }
+
   function showFoundOnHome(info) {
     showDevice(info, 1, 1, baseUrl(info.ip || ''), false);
     setConnectionState('online');
     syncHomeSetupPanel(true);
-    const banner = document.getElementById('home-found-device');
-    banner.hidden = false;
-    document.getElementById('home-found-detail').textContent =
-      `${info.name || 'PixelToy'} · ${info.ip || '已连接'}`;
+    renderHomeFoundDevices();
     logDiscovery('Device found on home',
       `${info.name || 'PixelToy'} at ${info.ip || currentBaseUrl}`);
   }
@@ -4300,6 +4568,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     });
     document.getElementById('lang-zh').setAttribute('aria-pressed', language === 'zh');
     document.getElementById('lang-en').setAttribute('aria-pressed', language === 'en');
+    updateProvisionPasswordToggle();
     if (currentStatus) {
       const message = text(currentStatus.key, currentStatus.values);
       if (currentView === 'device') toolStatusMessage.textContent = message;
@@ -4308,6 +4577,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     renderMidiTracks();
     renderPastePreview();
     gameLibraryGrid();
+    renderKnownDevices();
     updateControllerWarningText();
     renderConnectionStatus();
   }
@@ -4320,6 +4590,39 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   httpsSwitch.onclick = () => location.assign('https://junhuanchen.github.io/');
   applyLanguage(language);
 
+  const provisionSsidInput = document.getElementById('ssid');
+  const provisionPasswordInput = document.getElementById('password');
+  const provisionPasswordToggle = document.getElementById('show-password');
+  function updateProvisionPasswordToggle() {
+    const passwordInput = document.getElementById('password');
+    const toggle = document.getElementById('show-password');
+    const label = text(passwordInput.type === 'password' ? 'showPassword' : 'hidePassword');
+    toggle.textContent = label;
+    toggle.setAttribute('aria-label', `${label} ${text('passwordLabel')}`);
+  }
+  provisionPasswordToggle.onclick = () => {
+    provisionPasswordInput.type = provisionPasswordInput.type === 'password' ? 'text' : 'password';
+    updateProvisionPasswordToggle();
+  };
+  const PROVISION_CREDENTIALS_KEY = 'pixeltoy-provision-credentials';
+  function loadProvisionCredentials() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(PROVISION_CREDENTIALS_KEY) || '{}');
+      provisionSsidInput.value = typeof saved.ssid === 'string' ? saved.ssid : '';
+      provisionPasswordInput.value = typeof saved.password === 'string' ? saved.password : '';
+    } catch (_) {}
+  }
+  function saveProvisionCredentials() {
+    try {
+      localStorage.setItem(PROVISION_CREDENTIALS_KEY, JSON.stringify({
+        ssid: provisionSsidInput.value, password: provisionPasswordInput.value
+      }));
+    } catch (_) {}
+  }
+  provisionSsidInput.addEventListener('input', saveProvisionCredentials);
+  provisionPasswordInput.addEventListener('input', saveProvisionCredentials);
+  loadProvisionCredentials();
+
   function crc16(bytes) {
     let crc = 0xffff;
     for (const byte of bytes) {
@@ -4331,35 +4634,18 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     return crc;
   }
 
-  function nextProvisionSalt() {
-    const value = new Uint32Array(1);
-    if (globalThis.crypto?.getRandomValues) globalThis.crypto.getRandomValues(value);
-    else value[0] = Math.floor(Math.random() * 0x100000000);
-    return value[0];
-  }
-
-  function obfuscatePassword(bytes, salt) {
-    return Uint8Array.from(bytes, (value, index) => {
-      const saltByte = (salt >>> ((index & 3) * 8)) & 0xff;
-      return (value + saltByte + index * 29 + 0x5a) & 0xff;
-    });
-  }
-
-  function encodePacket(ssidText, passwordText, salt = nextProvisionSalt()) {
+  function encodePacket(ssidText, passwordText) {
     const ssid = encoder.encode(ssidText);
     const password = encoder.encode(passwordText);
     if (!ssid.length || ssid.length > 32) throw new Error(text('invalidSsid'));
     if (password.length && (password.length < 8 || password.length > 63)) throw new Error(text('invalidPassword'));
-    const packetSalt = salt;
-    const maskedPassword = obfuscatePassword(password, packetSalt);
-    const payloadLength = 1 + ssid.length + 1 + 4 + maskedPassword.length;
+    const payloadLength = 1 + ssid.length + 1 + password.length;
     const packet = new Uint8Array(5 + payloadLength + 2);
-    packet.set([0x50, 0x58, 2, payloadLength >> 8, payloadLength & 255, ssid.length]);
+    packet.set([0x50, 0x58, 1, payloadLength >> 8, payloadLength & 255, ssid.length]);
     packet.set(ssid, 6);
     const passwordOffset = 6 + ssid.length;
-    packet[passwordOffset] = maskedPassword.length;
-    packet.set([packetSalt >>> 24, packetSalt >>> 16, packetSalt >>> 8, packetSalt], passwordOffset + 1);
-    packet.set(maskedPassword, passwordOffset + 5);
+    packet[passwordOffset] = password.length;
+    packet.set(password, passwordOffset + 1);
     const checksum = crc16(packet.subarray(0, -2));
     packet[packet.length - 2] = checksum >> 8;
     packet[packet.length - 1] = checksum & 255;
@@ -4474,20 +4760,163 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     return text('requestBlocked');
   }
 
-  function showDevice(info, elapsedSeconds, attempts, deviceBaseUrl, navigate = true, persist = true) {
+  function deviceChoiceLabel(device) {
+    const shortId = String(device.id || '').slice(-4);
+    return `${device.name || 'PixelToy'} · ${shortId} · ${device.ip || device.hostname || '--'}`;
+  }
+
+  function renderKnownDevices() {
+    const switcher = document.getElementById('device-switcher');
+    const list = document.getElementById('device-list');
+    if (!switcher || !list) return;
+    switcher.hidden = currentView !== 'device' || localDevicePreview ||
+      (knownDevices.length === 0 && !activeScan);
+    const current = knownDevices.find(device => device.id === selectedDeviceId);
+    const label = document.getElementById('active-device-label');
+    if (label) {
+      label.textContent = currentBaseUrl
+        ? text('activeDeviceLabel', {
+          name: current?.name || document.getElementById('device-name').textContent || 'PixelToy',
+          id: String(current?.id || document.getElementById('device-id').textContent || '').slice(-4),
+          ip: current?.ip || current?.hostname || document.getElementById('device-ip').textContent || '--'
+        })
+        : text('noDeviceSelected');
+    }
+    list.replaceChildren();
+    list.hidden = knownDevices.length === 0;
+    knownDevices.forEach(device => {
+      const row = document.createElement('div');
+      row.className = 'device-entry';
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = deviceChoiceLabel(device);
+      button.setAttribute('aria-pressed', String(device.id === selectedDeviceId));
+      button.disabled = deviceSwitchPending;
+      button.onclick = () => selectKnownDevice(device.id);
+      const removeButton = document.createElement('button');
+      removeButton.type = 'button';
+      removeButton.className = 'device-remove';
+      removeButton.textContent = text('removeDevice');
+      removeButton.setAttribute('aria-label', `${text('removeDevice')} ${device.name || 'PixelToy'}`);
+      removeButton.disabled = deviceSwitchPending || Boolean(activeScan);
+      removeButton.onclick = () => removeKnownDevice(device.id);
+      row.append(button, removeButton);
+      list.append(row);
+    });
+    const scanButton = document.getElementById('scan-other-devices');
+    const stopButton = document.getElementById('stop-device-scan');
+    if (scanButton) scanButton.disabled = deviceSwitchPending || Boolean(activeScan);
+    if (stopButton) stopButton.hidden = !activeScan;
+    const discoveryPanel = document.getElementById('device-discovery-panel');
+    const discoveryToggle = document.getElementById('toggle-device-discovery');
+    if (discoveryPanel && discoveryToggle) {
+      const connected = Boolean(currentBaseUrl);
+      discoveryToggle.hidden = !connected || deviceDiscoveryExpanded;
+      discoveryPanel.hidden = connected && !deviceDiscoveryExpanded;
+    }
+    if (currentView === 'device' && !currentBaseUrl && knownDevices.length)
+      deviceTools.hidden = false;
+    renderHomeFoundDevices();
+  }
+
+  function rememberDiscoveredDevice(info, deviceBaseUrl) {
+    let host = '';
+    try { host = normalizeHost(new URL(deviceBaseUrl).hostname); } catch (_) {}
+    const ip = info.ip || (/^\d{1,3}(?:\.\d{1,3}){3}$/.test(host) ? host : '');
+    const hostname = info.hostname || (ip ? 'pixeltoy.local' : host);
+    const record = {
+      id: info.id, name: info.name || 'PixelToy', model: info.model || '',
+      version: info.version || '', ip, hostname, lastSeen: new Date().toISOString()
+    };
+    const existingIndex = knownDevices.findIndex(device => device.id === record.id);
+    if (existingIndex < 0 && knownDevices.length >= MAX_KNOWN_DEVICES)
+      return { record: null, added: false, limitReached: true };
+    if (existingIndex < 0) knownDevices.push(record);
+    else knownDevices[existingIndex] = record;
+    knownDevicePresence.set(record.id, 'online');
+    knownDevicePresenceFailures.delete(record.id);
+    try {
+      localStorage.setItem(DEVICE_LIST_STORAGE_KEY, JSON.stringify(knownDevices));
+    } catch (_) {}
+    recordSubnet(ip);
+    renderKnownDevices();
+    return { record, added: existingIndex < 0, limitReached: false };
+  }
+
+  function removeKnownDevice(deviceId) {
+    const index = knownDevices.findIndex(device => device.id === deviceId);
+    if (index < 0 || deviceSwitchPending || activeScan) return;
+    const [device] = knownDevices.splice(index, 1);
+    knownDevicePresence.delete(deviceId);
+    knownDevicePresenceFailures.delete(deviceId);
+    try {
+      localStorage.setItem(DEVICE_LIST_STORAGE_KEY, JSON.stringify(knownDevices));
+    } catch (_) {}
+    if (selectedDeviceId === deviceId) {
+      selectedDeviceId = '';
+      try {
+        localStorage.removeItem(DEVICE_SELECTION_STORAGE_KEY);
+        const savedDevice = JSON.parse(localStorage.getItem('pixeltoy-device') || '{}');
+        if (savedDevice.id === deviceId) localStorage.removeItem('pixeltoy-device');
+      } catch (_) {}
+    }
+    renderKnownDevices();
+    setStatus('deviceRemoved', { name: device.name || 'PixelToy' });
+  }
+
+  function offerDiscoveredDevice(info) {
+    setStatus('otherDeviceAvailable', {
+      name: info.name || 'PixelToy', id: String(info.id || '').slice(-4)
+    });
+  }
+
+  async function selectKnownDevice(deviceId) {
+    const device = knownDevices.find(item => item.id === deviceId);
+    if (!device || deviceSwitchPending || (currentBaseUrl && device.id === selectedDeviceId)) return false;
+    const host = normalizeHost(device.ip) || normalizeHost(device.hostname);
+    if (!host) return false;
+    const previousTool = currentTool;
+    deviceSwitchPending = true;
+    renderKnownDevices();
+    try {
+      const deviceBaseUrl = baseUrl(host);
+      const info = await requestDeviceInfo(deviceBaseUrl);
+      if (currentBaseUrl) releaseWebControls();
+      showDevice(info, 0, 1, deviceBaseUrl, false, true);
+      if (previousTool) showTool(previousTool);
+      setStatus('deviceSwitched', {
+        name: info.name || 'PixelToy', ip: info.ip || host
+      });
+      return true;
+    } catch (error) {
+      setStatus('deviceSwitchFailed', {
+        name: device.name || 'PixelToy', error: error.message
+      });
+      return false;
+    } finally {
+      deviceSwitchPending = false;
+      renderKnownDevices();
+    }
+  }
+
+  function showDevice(info, elapsedSeconds, attempts, deviceBaseUrl, navigate = true, persist = true,
+                      preserveScan = false) {
     homeDeviceAvailable = true;
     setConnectionState('online');
     clearTimeout(finderTimer);
     clearTimeout(scanStatusTimer);
     scanStatusTimer = 0;
     finderTimer = 0;
-    if (activeScan) {
+    if (activeScan && !preserveScan) {
       activeScan.cancelled = true;
       activeScan.controller.abort();
     }
-    setScanUi(false);
-    document.getElementById('scan-status').hidden = true;
+    if (!preserveScan) {
+      setScanUi(false);
+      document.getElementById('scan-status').hidden = true;
+    }
     currentBaseUrl = deviceBaseUrl;
+    deviceDiscoveryExpanded = preserveScan;
     controllerLastBase = deviceBaseUrl || controllerLastBase;
     stopFinder();
     document.getElementById('device-name').textContent = info.name || 'PixelToy';
@@ -4495,24 +4924,29 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     document.getElementById('device-ip').textContent = info.ip || '--';
     document.getElementById('device-model').textContent = info.model || '--';
     document.getElementById('device-version').textContent = info.version || '--';
+    const modeSelect = document.getElementById('controller-device-mode');
+    if (modeSelect && Number.isInteger(info.deviceMode) && info.deviceMode >= 0 && info.deviceMode <= 3)
+      modeSelect.value = String(info.deviceMode);
     document.getElementById('device-time').textContent = text('secondsValue', {
       seconds: elapsedSeconds.toFixed(1), attempts: String(attempts)
     });
     deviceCard.hidden = false;
     deviceTools.hidden = false;
     document.getElementById('controller-launcher').hidden = currentView !== 'device';
-    document.getElementById('device-connect-panel').open = false;
-    showTool('');
+    showTool('create');
     if (navigate) showView('device');
     if (persist) {
+      rememberDiscoveredDevice(info, deviceBaseUrl);
+      selectedDeviceId = info.id;
+      localStorage.setItem(DEVICE_SELECTION_STORAGE_KEY, selectedDeviceId);
       localStorage.setItem('pixeltoy-device', JSON.stringify({
         id: info.id, name: info.name || 'PixelToy', model: info.model || '',
         version: info.version || '', ip: info.ip || '',
         hostname: info.hostname || 'pixeltoy.local',
         lastSeen: new Date().toISOString()
       }));
-      recordSubnet(info.ip || '');
     }
+    renderKnownDevices();
   }
 
   function startLocalDevicePreview() {
@@ -4525,7 +4959,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     const previewInfo = {
       vendor: 'vansynx', type: 'pixeltoy', id: 'PREVIEW',
       name: 'PixelToy-Preview', model: 'PX01', version: 'Preview',
-      ip: '192.168.1.37', hostname: 'pixeltoy.local'
+      ip: '192.168.1.37', hostname: 'pixeltoy.local', deviceMode: 0
     };
     localDevicePreview = true;
     stopFinder();
@@ -4559,11 +4993,21 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     const started = performance.now();
     let attempt = 0;
     let found = false;
+    let otherDeviceFound = false;
     try {
       for (const candidate of discoveryCandidates()) {
         attempt++;
         try {
           const info = await requestDeviceInfo(candidate);
+          if (selectedDeviceId && info.id !== selectedDeviceId) {
+            otherDeviceFound = true;
+            setStatus('otherDeviceAvailable', {
+              name: info.name || 'PixelToy', id: String(info.id || '').slice(-4)
+            });
+            logDiscovery('Another device detected',
+              `${info.name || 'PixelToy'} at ${candidate} id=${info.id}; awaiting manual scan`);
+            return;
+          }
           const elapsed = (performance.now() - started) / 1000;
           found = true;
           if (currentView === 'start') {
@@ -4579,7 +5023,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     } finally {
       finderBusy = false;
       if (currentView === 'start') syncHomeSetupPanel(found || homeDeviceAvailable);
-      if (!finderStopped && !homeDeviceAvailable && !found &&
+      if (!finderStopped && !homeDeviceAvailable && !found && !otherDeviceFound &&
           (currentView === 'device' || currentView === 'start')) {
         scheduleFinder(3000);
       }
@@ -4587,7 +5031,8 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     return false;
   }
 
-  async function waitForDevice(seconds = 35, explicitHost = '', explicitOnly = false) {
+  async function waitForDevice(seconds = 35, explicitHost = '', explicitOnly = false,
+                               respectSelection = true) {
     const candidates = explicitOnly
       ? [baseUrl(normalizeHost(explicitHost))]
       : discoveryCandidates(explicitHost);
@@ -4607,6 +5052,11 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       });
       try {
         const info = await requestDeviceInfo(candidate);
+        if (respectSelection && !explicitOnly && selectedDeviceId &&
+            info.id !== selectedDeviceId) {
+          offerDiscoveredDevice(info);
+          return false;
+        }
         const finalElapsed = (performance.now() - started) / 1000;
         showDevice(info, finalElapsed, attempts, candidate, false);
         logDiscovery('Device found', `${info.name} at ${candidate} id=${info.id} in ${finalElapsed.toFixed(1)}s`);
@@ -4626,7 +5076,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       const stored = JSON.parse(localStorage.getItem('pixeltoy-subnets') || '[]');
       if (!Array.isArray(stored)) return [];
       return stored.filter(item =>
-        typeof item?.prefix === 'string' && /^192\.168\.(\d{1,3})\.$/.test(item.prefix));
+        typeof item?.prefix === 'string' && isValidScanPrefix(item.prefix));
     } catch (_) {
       return [];
     }
@@ -4646,8 +5096,8 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     const parts = String(ipText || '').split('.');
     if (parts.length === 4 && parts.slice(0, 3).every(part => /^\d{1,3}$/.test(part))) {
       const octets = parts.slice(0, 3).map(Number);
-      if (octets[0] === 192 && octets[1] === 168 &&
-          octets.every(value => value >= 0 && value <= 255)) {
+      if (octets.every(value => value >= 0 && value <= 255) &&
+          isPrivateSubnet(octets)) {
         return `${octets.join('.')}.`;
       }
     }
@@ -4675,8 +5125,13 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
 
   function isValidScanPrefix(value) {
     const octets = subnetOctets(value);
-    if (!octets) return false;
-    return octets[0] === 192 && octets[1] === 168;
+    return Boolean(octets && isPrivateSubnet(octets));
+  }
+
+  function isPrivateSubnet(octets) {
+    return octets[0] === 10 ||
+      (octets[0] === 172 && octets[1] >= 16 && octets[1] <= 31) ||
+      (octets[0] === 192 && octets[1] === 168);
   }
 
   function lastIpOctet(ipText) {
@@ -4689,15 +5144,15 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
 
   function setScanUi(running) {
     const progress = document.getElementById('scan-progress');
-    const stopButton = document.getElementById('scan-stop');
-    const startButtons = [
-      document.getElementById('scan-lan'),
-      document.getElementById('scan-prefix-go'),
-      document.getElementById('connect-host')
-    ];
+    const stopButton = document.getElementById('stop-device-scan');
+    const deviceScanButton = document.getElementById('scan-other-devices');
+    const connectButton = document.getElementById('connect-host');
     progress.hidden = !running;
+    if (running) progress.value = 0;
     stopButton.hidden = !running;
-    startButtons.forEach(button => { button.disabled = running; });
+    if (deviceScanButton) deviceScanButton.disabled = running;
+    connectButton.disabled = running;
+    renderKnownDevices();
   }
 
   function showScanStatus(key, values = {}) {
@@ -4763,77 +5218,138 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     return null;
   }
 
+  async function scanSubnetDevices(
+    range, onStatus, maxSeconds = 55, maxDevices = MAX_KNOWN_DEVICES, onDeviceFound = null
+  ) {
+    if (activeScan?.cancelled) return { devices: [], cancelled: true };
+    const urls = hostUrls(range, true);
+    const deadline = Date.now() + maxSeconds * 1000;
+    const devices = [];
+    let done = 0;
+    while (done < urls.length && devices.length < maxDevices) {
+      if (activeScan?.cancelled) return { devices, cancelled: true };
+      if (Date.now() > deadline) break;
+      const batch = urls.slice(done, done + 16);
+      done += batch.length;
+      await Promise.allSettled(batch.map(async url => {
+        const info = await probeUrl(url, activeScan?.controller?.signal);
+        if (!info) return;
+        const found = { info, url };
+        if (devices.some(device => device.info.id === info.id) ||
+            devices.length >= maxDevices) return;
+        devices.push(found);
+        onDeviceFound?.(found);
+      }));
+      if (activeScan?.cancelled) return { devices, cancelled: true };
+      onStatus?.({ range, done: String(done), total: String(urls.length), count: String(devices.length) });
+    }
+    return { devices, cancelled: false, complete: done >= urls.length };
+  }
+
+  async function scanOtherDevices(prefix = '') {
+    if (activeScan || deviceSwitchPending || localDevicePreview) return false;
+    const scan = { controller: new AbortController(), cancelled: false, deviceListScan: true };
+    activeScan = scan;
+    setScanUi(true);
+    showScanStatus('scanDevicesProgress', {
+      range: prefix ? `${prefix}0/24` : 'private /24', done: '0', total: '256',
+      count: String(knownDevices.length)
+    });
+    setStatus('scanDevicesProgress', {
+      range: prefix ? `${prefix}0/24` : 'private /24', done: '0', total: '256',
+      count: String(knownDevices.length)
+    });
+    let firstFound = null;
+    let foundCount = 0;
+    try {
+      const selected = knownDevices.find(device => device.id === selectedDeviceId);
+      const selectedPrefix = subnetPrefix(selected?.ip);
+      const ranges = prefix ? [prefix.replace(/\.$/, '')] : await findSubnetRanges();
+      if (!prefix && selectedPrefix) {
+        const selectedRange = selectedPrefix.slice(0, -1);
+        ranges.splice(0, ranges.length, selectedRange,
+          ...ranges.filter(range => range !== selectedRange));
+      }
+      for (const range of ranges) {
+        if (scan.cancelled) break;
+        const result = await scanSubnetDevices(range, progress => {
+          const values = {
+            range: `${range}.0/24`, done: progress.done,
+            total: progress.total,
+            count: String(knownDevices.length)
+          };
+          showScanStatus('scanDevicesProgress', values);
+          document.getElementById('scan-progress').value = Number(progress.done);
+          setStatus('scanDevicesProgress', values);
+        }, 55, MAX_KNOWN_DEVICES, found => {
+          const isKnownDevice = knownDevices.some(device => device.id === found.info.id);
+          if (!isKnownDevice && knownDevices.length >= MAX_KNOWN_DEVICES) return;
+          foundCount++;
+          if (!firstFound) {
+            firstFound = found;
+            showDevice(found.info, 0, 1, found.url, false, true, true);
+            setStatus('scanFound', {
+              name: found.info.name || 'PixelToy',
+              ip: found.info.ip || normalizeHost(new URL(found.url).hostname)
+            });
+            logDiscovery('First scanned device selected; scan continuing',
+              `${found.info.name || 'PixelToy'} at ${found.url}`);
+          } else {
+            rememberDiscoveredDevice(found.info, found.url);
+          }
+        });
+        if (result.cancelled) break;
+        if (result.devices.length) break;
+      }
+      if (firstFound) {
+        showScanStatus('scanDevicesFound', { count: String(foundCount) });
+        setStatus('scanDevicesFound', { count: String(foundCount) });
+        return true;
+      } else if (scan.cancelled) {
+        showScanStatus('scanCancelled');
+        setStatus('scanCancelled');
+      } else {
+        showScanStatus('scanDevicesNone');
+        setStatus('scanDevicesNone');
+      }
+      return false;
+    } catch (error) {
+      showScanStatus('scanFailed');
+      setStatus('scanFailed');
+      logDiscovery('Multi-device scan failed', error.message);
+      return false;
+    } finally {
+      if (activeScan === scan) activeScan = null;
+      if (firstFound) deviceDiscoveryExpanded = false;
+      setScanUi(false);
+      renderKnownDevices();
+    }
+  }
+
   async function findSubnetRanges() {
     const subnets = readSubnets().map(item => item.prefix);
+    knownDevices.forEach(device => {
+      const prefix = subnetPrefix(device.ip);
+      if (prefix && !subnets.includes(prefix)) subnets.push(prefix);
+    });
+    try {
+      const saved = JSON.parse(localStorage.getItem('pixeltoy-device') || '{}');
+      const prefix = subnetPrefix(saved.ip);
+      if (prefix && !subnets.includes(prefix)) subnets.push(prefix);
+    } catch (_) {}
     const ranges = [];
     for (const prefix of subnets) {
       const octets = subnetOctets(prefix);
       if (octets) {
-        const third = String(octets[2]);
-        if (!ranges.some(range => range.endsWith(`.${third}`))) ranges.push(`192.168.${third}`);
+        const range = octets.join('.');
+        if (!ranges.includes(range)) ranges.push(range);
       }
     }
     for (const third of ['1', '0', '2', '100', '50']) {
-      if (!ranges.some(range => range.endsWith(`.${third}`))) ranges.push(`192.168.${third}`);
+      const range = `192.168.${third}`;
+      if (!ranges.includes(range)) ranges.push(range);
     }
     return ranges;
-  }
-
-  async function scanLocalNetwork(prefix = '') {
-    if (activeScan) return false;
-    logDiscovery('IP scan requested', `prefix=${prefix || '(auto)'}`);
-    const controller = new AbortController();
-    activeScan = { controller, cancelled: false };
-    setScanUi(true);
-    deviceCard.hidden = true;
-    let result = false;
-    try {
-      const ranges = prefix
-        ? [prefix.replace(/\.$/, '')]
-        : await findSubnetRanges();
-      showScanStatus('scanRunning', {
-        range: `${ranges[0]}.0/24`, done: '0', total: '256'
-      });
-      document.getElementById('scan-progress').value = 0;
-      let info = null;
-      let foundUrl = '';
-      for (const range of ranges) {
-        if (activeScan.cancelled) break;
-        info = await scanSubnet(range, (progress) => {
-          if (progress.done !== undefined) {
-            showScanStatus('scanRunning', {
-              range: `${range}.0/24`,
-              done: progress.done, total: progress.total
-            });
-            document.getElementById('scan-progress').value = progress.done;
-          }
-        });
-        if (info) {
-          const last = lastIpOctet(info.info.ip);
-          foundUrl = Number.isInteger(last)
-            ? baseUrl(`${range}.${last}`)
-            : info.url;
-          break;
-        }
-      }
-      if (info) {
-        showDevice(info.info, 1, 1, foundUrl);
-        setStatus('scanFound', { name: info.info.name || 'PixelToy', ip: info.info.ip || foundUrl });
-        logDiscovery('Device found by IP scan', `${info.info.name} at ${foundUrl}`);
-        result = true;
-      } else if (activeScan.cancelled) {
-        setStatus('scanCancelled');
-      } else {
-        setStatus('scanFailed');
-        logDiscovery('IP scan finished without result',
-          `scanned ${ranges.map(range => `${range}.0/24`).join(', ')}`);
-        clearScanStatusLater();
-      }
-    } finally {
-      setScanUi(false);
-      activeScan = null;
-    }
-    return result;
   }
 
   // Silent subnet probe used by provisioning confirm and controller
@@ -4861,20 +5377,22 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     return prefix;
   }
 
-  function startSubnetScan() {
-    const input = document.getElementById('scan-prefix');
+  function startDeviceScan() {
+    const input = document.getElementById('device-address');
     const value = input.value.trim();
     if (!value) {
-      scanLocalNetwork();
+      scanOtherDevices();
       return;
     }
-    const prefix = normalizeScanPrefix(value);
+    const host = normalizeHost(value);
+    const prefix = host && /^\d/.test(host)
+      ? subnetPrefix(host) : normalizeScanPrefix(value);
     if (!isValidScanPrefix(prefix)) {
       setStatus('invalidScanPrefix');
       return;
     }
     input.value = prefix;
-    scanLocalNetwork(prefix);
+    scanOtherDevices(prefix);
   }
 
   function crc32(bytes) {
@@ -5010,9 +5528,10 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     }
   };
 
-  function aiPromptForTemplate() {
+  async function aiPromptForTemplate() {
     const id = document.getElementById('ai-template').value;
     const rule = (AI_TEMPLATE_RULES[id] || AI_TEMPLATE_RULES.reversi);
+    const presetId = document.getElementById('ai-preset-source').value;
     const common = language === 'zh'
       ? '请用 PICO-8 Lua 写一个完整可运行的游戏卡带：'
       : 'Write a complete, runnable PICO-8 Lua cartridge:';
@@ -5023,7 +5542,24 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       ? '要求：只输出完整 Lua，包含 function _init()、function _update() 与 function _draw()；用清楚的菜单、操作提示和结果反馈串起完整流程；优先保证核心玩法可运行，控制画面与代码规模；使用 PICO-8 API 文档中说明的 API，代码控制在 50 KB 以内。'
       : 'Requirements: output only complete Lua with function _init(), function _update(), and function _draw(); connect the full flow with a clear menu, control hints, and result feedback. Prioritize a playable core loop and keep the visuals and code compact. Use APIs documented in the PICO-8 manual and stay under 50 KB.';
     const docs = 'https://www.lexaloffle.com/dl/docs/pico-8_manual.html';
+    if (presetId) {
+      const game = BUILTIN_GAMES.find(item => item.id === presetId);
+      if (!game) throw new Error('Selected preset Cart is missing');
+      const source = await builtinGameSource(game);
+      const name = language === 'zh' ? game.title : ((GAME_META[game.id] || {}).en || game.title);
+      const recreate = language === 'zh'
+        ? `请根据下面《${name}》的完整源码复刻这个卡带，保留原有核心玩法、规则和操作逻辑；可以整理代码，但不要省略实现。`
+        : `Recreate the “${name}” Cart from the complete source below. Preserve its core gameplay, rules, and controls. You may organize the code, but do not omit implementation.`;
+      return `${recreate}\n${requirements}\n\n--- ${name} source begins ---\n${source}\n--- ${name} source ends ---\n\n${docs}`;
+    }
     return `${common}\n${rules}${rule[language === 'zh' ? 'zh' : 'en']}\n${requirements}\n${docs}`;
+  }
+
+  async function builtinGameSource(game) {
+    const compressed = base64ToBytes(game.payload);
+    const stream = new Blob([compressed]).stream()
+      .pipeThrough(new DecompressionStream('deflate-raw'));
+    return new TextDecoder().decode(await new Response(stream).arrayBuffer());
   }
 
   function luaSourceFromPaste(value) {
@@ -5076,7 +5612,13 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   }
 
   async function copyAiPrompt() {
-    const prompt = aiPromptForTemplate();
+    let prompt;
+    try {
+      prompt = await aiPromptForTemplate();
+    } catch (error) {
+      setStatus('aiPresetSourceFailed', { error: error.message });
+      return;
+    }
     try {
       await navigator.clipboard.writeText(prompt);
       const element = document.getElementById('ai-check-result');
@@ -5092,6 +5634,55 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       document.execCommand('copy');
       textarea.remove();
     }
+  }
+
+  const GAME_CART_DRAFT_KEY = 'pixeltoy-game-cart-draft';
+  let gameCartDraftTimer = null;
+
+  function saveGameCartDraftNow() {
+    clearTimeout(gameCartDraftTimer);
+    gameCartDraftTimer = null;
+    const value = document.getElementById('cart-paste').value;
+    try {
+      if (value.trim()) localStorage.setItem(GAME_CART_DRAFT_KEY, value);
+      else localStorage.removeItem(GAME_CART_DRAFT_KEY);
+    } catch (error) {
+      // Draft recovery is optional; editor use should continue if storage is unavailable.
+    }
+  }
+
+  function queueGameCartDraftSave() {
+    clearTimeout(gameCartDraftTimer);
+    gameCartDraftTimer = setTimeout(saveGameCartDraftNow, 400);
+  }
+
+  function initGameCartDraftRecovery() {
+    const panel = document.getElementById('cart-draft-recovery');
+    const textarea = document.getElementById('cart-paste');
+    const restoreButton = document.getElementById('restore-cart-draft');
+    const deleteButton = document.getElementById('delete-cart-draft');
+    let draft = '';
+    try { draft = localStorage.getItem(GAME_CART_DRAFT_KEY) || ''; } catch (error) {}
+    panel.hidden = !draft.trim();
+
+    restoreButton.onclick = () => {
+      try { draft = localStorage.getItem(GAME_CART_DRAFT_KEY) || ''; } catch (error) { draft = ''; }
+      if (!draft.trim()) {
+        panel.hidden = true;
+        return;
+      }
+      textarea.value = draft;
+      panel.hidden = true;
+      if (typeof textarea.oninput === 'function') textarea.oninput({ target: textarea });
+      setStatus('cartDraftRestored');
+    };
+    deleteButton.onclick = () => {
+      clearTimeout(gameCartDraftTimer);
+      gameCartDraftTimer = null;
+      try { localStorage.removeItem(GAME_CART_DRAFT_KEY); } catch (error) {}
+      panel.hidden = true;
+      setStatus('cartDraftDeleted');
+    };
   }
 
   function renderPastePreview() {
@@ -5154,11 +5745,19 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   const controlStates = new Uint8Array(2);
   const controlDirty = [false, false];
   const controlSending = [false, false];
+  const controlRequests = [null, null];
+  let controlGeneration = 0;
   let controlErrorShown = false;
   var controllerUnreachable = false;
   var controllerPingFailures = 0;
   var controllerReconnecting = false;
   var controllerLastBase = '';
+  let controllerModeSwitching = false;
+
+  function controllerModeLabel(mode) {
+    return text(['deviceModeOnline', 'deviceModeOffline', 'deviceModeP1', 'deviceModeP2'][mode] ||
+      'deviceModeOnline');
+  }
 
   function controllerActive() {
     return currentView === 'device' && Boolean(currentBaseUrl);
@@ -5191,16 +5790,24 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     if (found) {
       setConnectionState('online');
       showControllerRefresh(false);
+      resetControllerTransport();
       updateControllerWarningText();
       return;
     }
     logDiscovery('Controller quick candidates failed, scanning subnets');
     const ranges = await findSubnetRanges();
     const viaScan = await probeSubnetsForDevice(ranges);
-    if (viaScan) {
+    if (viaScan && selectedDeviceId && viaScan.info.id !== selectedDeviceId) {
+      setStatus('otherDeviceAvailable', {
+        name: viaScan.info.name || 'PixelToy', id: String(viaScan.info.id || '').slice(-4)
+      });
+      setConnectionState('offline');
+      showControllerRefresh(true);
+    } else if (viaScan) {
       showDevice(viaScan.info, 1, 1, viaScan.url, false);
       setConnectionState('online');
       showControllerRefresh(false);
+      resetControllerTransport();
     } else {
       setConnectionState('offline');
       showControllerRefresh(true);
@@ -5213,10 +5820,12 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     controllerLastBase = currentBaseUrl || controllerLastBase;
     try {
       const info = await requestDeviceInfo(currentBaseUrl);
+      const recovered = controllerPingFailures > 0 || controllerUnreachable || controllerReconnecting;
       controllerLastBase = currentBaseUrl;
       controllerPingFailures = 0;
       setConnectionState('online');
       showControllerRefresh(false);
+      if (recovered) resetControllerTransport();
       if (controllerReconnecting) {
         controllerReconnecting = false;
         logDiscovery('Controller link recovered', `${info.name} at ${currentBaseUrl}`);
@@ -5241,35 +5850,102 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     if (!open) releaseWebControls();
   }
 
-  async function sendControlPacket(player, state) {
+  async function sendControlPacket(player, state, generation = controlGeneration) {
     const packet = new Uint8Array([player, state, (~state) & 0xff]);
-    const response = await fetch(`${currentBaseUrl}/api/control`, {
-      method: 'POST', mode: 'cors', targetAddressSpace: 'local', keepalive: true,
-      headers: { 'Content-Type': 'text/plain' }, body: packet
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const controller = new AbortController();
+    const slot = player >= 0 && player < controlRequests.length ? player : -1;
+    if (slot >= 0) controlRequests[slot] = controller;
+    const timeout = setTimeout(() => controller.abort(), 2000);
+    try {
+      const response = await fetch(`${currentBaseUrl}/api/control`, {
+        method: 'POST', mode: 'cors', targetAddressSpace: 'local', keepalive: true,
+        cache: 'no-store', signal: controller.signal,
+        headers: { 'Content-Type': 'text/plain' }, body: packet
+      });
+      if (generation !== controlGeneration) return;
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    } finally {
+      clearTimeout(timeout);
+      if (slot >= 0 && controlRequests[slot] === controller) controlRequests[slot] = null;
+    }
   }
 
   async function pumpControl(player) {
     if (controlSending[player] || !currentBaseUrl) return;
+    const generation = controlGeneration;
     controlSending[player] = true;
     try {
-      while (controlDirty[player]) {
+      while (controlDirty[player] && generation === controlGeneration) {
         controlDirty[player] = false;
         const state = controlStates[player];
-        await sendControlPacket(player, state);
+        await sendControlPacket(player, state, generation);
         if (state !== controlStates[player]) controlDirty[player] = true;
       }
       controlErrorShown = false;
     } catch (error) {
+      if (generation !== controlGeneration) return;
       showControllerRefresh(true);
       if (!controlErrorShown) {
         setStatus('controllerFailed', { error: error.message });
         controlErrorShown = true;
       }
     } finally {
+      if (generation === controlGeneration) {
+        controlSending[player] = false;
+        if (controlDirty[player]) pumpControl(player);
+      }
+    }
+  }
+
+  function suspendControllerTransport() {
+    controlGeneration++;
+    for (let player = 0; player < 2; player++) {
+      controlRequests[player]?.abort();
+      controlRequests[player] = null;
       controlSending[player] = false;
-      if (controlDirty[player]) pumpControl(player);
+      controlDirty[player] = false;
+    }
+    controlErrorShown = false;
+  }
+
+  function resetControllerTransport() {
+    suspendControllerTransport();
+    for (let player = 0; player < 2; player++) {
+      controlDirty[player] = true;
+      pumpControl(player);
+    }
+  }
+
+  async function switchControllerDeviceMode() {
+    if (controllerModeSwitching || !currentBaseUrl) return false;
+    const select = document.getElementById('controller-device-mode');
+    const button = document.getElementById('controller-mode-apply');
+    const mode = Number(select.value);
+    if (!Number.isInteger(mode) || mode < 0 || mode > 3) return false;
+    const modeName = controllerModeLabel(mode);
+    if (!confirm(text('deviceModeConfirm', { mode: modeName }))) return false;
+    controllerModeSwitching = true;
+    button.disabled = true;
+    releaseWebControls();
+    try {
+      await sendControlPacket(0xfe, mode);
+      suspendControllerTransport();
+      controllerLastBase = currentBaseUrl;
+      setControllerOpen(false);
+      currentBaseUrl = '';
+      homeDeviceAvailable = false;
+      setConnectionState('offline');
+      document.getElementById('controller-launcher').hidden = true;
+      renderKnownDevices();
+      setStatus('deviceModeSwitching', { mode: modeName });
+      if (mode === 0) scheduleFinder(1200);
+      return true;
+    } catch (error) {
+      setStatus('deviceModeSwitchFailed', { error: error.message });
+      return false;
+    } finally {
+      controllerModeSwitching = false;
+      button.disabled = false;
     }
   }
 
@@ -5312,6 +5988,8 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       if (controlStates[player]) queueControl(player);
   }, 100);
   setInterval(pingController, 5000);
+  setInterval(refreshKnownDevicePresence, 5000);
+  setTimeout(refreshKnownDevicePresence, 0);
 
   async function midiCoverRows() {
     const file = document.getElementById('midi-cover').files[0] || null;
@@ -5631,13 +6309,26 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   }
 
   sendButton.onclick = async () => {
+    const attemptId = ++provisionAttemptId;
     try {
       const packet = encodePacket(document.getElementById('ssid').value, document.getElementById('password').value);
       document.getElementById('home-found-device').hidden = true;
       hideProvisionResult();
+      saveProvisionCredentials();
       sendButton.disabled = true;
       stopButton.hidden = false;
-      if (await playProvision(packet)) {
+      const played = await playProvision(packet);
+      if (attemptId === provisionAttemptId) {
+        sendButton.disabled = false;
+        stopButton.hidden = true;
+      }
+      if (!played) {
+        showSetupResult('stopped');
+        return;
+      }
+      if (provisionCheckPending) return;
+      provisionCheckPending = true;
+      try {
         const found = await waitForDevice(20);
         if (found) {
           showProvisionResult('ok', 'setupSuccess', {
@@ -5648,24 +6339,36 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
           // device that connected but missed mDNS can still be confirmed.
           const foundDevice = await probeSubnetsForDevice(await findSubnetRanges());
           if (foundDevice) {
-            showDevice(foundDevice.info, 1, 1, foundDevice.url, false);
-            showProvisionResult('ok', 'setupSuccess', {
-              name: foundDevice.info.name || 'PixelToy'
-            });
+            if (selectedDeviceId && foundDevice.info.id !== selectedDeviceId) {
+              setStatus('otherDeviceAvailable', {
+                name: foundDevice.info.name || 'PixelToy',
+                id: String(foundDevice.info.id || '').slice(-4)
+              });
+              showProvisionResult('ok', 'setupSuccess', {
+                name: foundDevice.info.name || 'PixelToy'
+              });
+            } else {
+              showDevice(foundDevice.info, 1, 1, foundDevice.url, false);
+              showProvisionResult('ok', 'setupSuccess', {
+                name: foundDevice.info.name || 'PixelToy'
+              });
+            }
           } else {
             document.getElementById('setup-fallback').open = true;
             showProvisionResult('fail', 'setupFailed');
           }
         }
-      } else {
-        showSetupResult('stopped');
+      } finally {
+        provisionCheckPending = false;
       }
     } catch (error) {
       status.textContent = error.message || text('playbackFailed');
       showSetupResult('playbackFailed');
     } finally {
-      sendButton.disabled = false;
-      stopButton.hidden = true;
+      if (attemptId === provisionAttemptId) {
+        sendButton.disabled = false;
+        stopButton.hidden = true;
+      }
     }
   };
   stopButton.onclick = async () => {
@@ -5674,9 +6377,9 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     try { activeAudio.oscillator?.stop(); } catch (_) {}
     setStatus('stopped');
   };
-  document.getElementById('go-to-device').onclick = () => { showTool(''); showView('device', true); };
+  document.getElementById('go-to-device').onclick = () => { showTool('create'); showView('device', true); };
   document.getElementById('home-found-device').onclick = () => {
-    showTool('');
+    showTool('create');
     showView('device', true);
   };
   document.getElementById('retry-setup').onclick = () => {
@@ -5685,13 +6388,13 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     clearStatus();
   };
   document.getElementById('nav-start').onclick = () => showView('start', true);
-  document.getElementById('nav-device').onclick = () => { showTool(''); showView('device', true); };
+  document.getElementById('nav-device').onclick = () => { showTool('create'); showView('device', true); };
   showView('start');
   renderConnectionStatus();
   startLocalDevicePreview();
   document.getElementById('connect-host').onclick = async () => {
     const button = document.getElementById('connect-host');
-    const host = normalizeHost(document.getElementById('manual-host').value);
+    const host = normalizeHost(document.getElementById('device-address').value);
     if (!host) {
       setStatus('invalidHost');
       return;
@@ -5699,32 +6402,50 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     button.disabled = true;
     try { await waitForDevice(8, host, true); } finally { button.disabled = false; }
   };
-  document.getElementById('scan-lan').onclick = () => scanLocalNetwork();
-  document.getElementById('scan-stop').onclick = () => {
+  const cancelActiveScan = () => {
     if (!activeScan) return;
     activeScan.cancelled = true;
     activeScan.controller.abort();
   };
-  document.getElementById('scan-prefix-go').onclick = startSubnetScan;
-  document.getElementById('scan-prefix').addEventListener('keydown', event => {
+  document.getElementById('scan-other-devices').onclick = startDeviceScan;
+  document.getElementById('stop-device-scan').onclick = cancelActiveScan;
+  document.getElementById('toggle-device-discovery').onclick = () => {
+    deviceDiscoveryExpanded = true;
+    renderKnownDevices();
+    document.getElementById('device-address').focus();
+  };
+  document.getElementById('device-address').addEventListener('keydown', event => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      startSubnetScan();
+      const value = event.currentTarget.value.trim();
+      if (normalizeHost(value)) document.getElementById('connect-host').click();
+      else startDeviceScan();
     }
   });
   document.getElementById('cart-paste').oninput = event => {
     const value = event.target.value;
+    document.getElementById('cart-draft-recovery').hidden = true;
+    queueGameCartDraftSave();
     document.getElementById('run-cart-paste').disabled = !value.trim();
     pastedCartBytes = new TextEncoder().encode(value).length;
     pastedCartIsCart = isFullCartText(value);
     renderPastePreview();
     renderAiCheck(value);
   };
+  initGameCartDraftRecovery();
+  window.addEventListener('pagehide', saveGameCartDraftNow);
   document.getElementById('run-cart-paste').onclick = runPastedCart;
   document.getElementById('ai-copy-prompt').onclick = copyAiPrompt;
   // --- MIDI approximate preview -------------------------------------------
   let previewContext = null;
   let previewGainNode = null;
+  let previewScheduleTimer = 0;
+  let previewEndTimer = 0;
+  let previewProgressTimer = 0;
+  let previewDuration = 0;
+  let previewPlaybackStart = 0;
+  let previewStartOffset = 0;
+  let previewSeeking = false;
 
   function tickToSeconds(preview, tick) {
     if (!preview || !preview.division) return 0;
@@ -5743,6 +6464,30 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
 
   function midiNoteFrequency(midiNote) {
     return 440 * Math.pow(2, (midiNote - 69) / 12);
+  }
+
+  function trimMidiPreviewLeadIn(notes) {
+    if (!notes.length) return 0;
+    const leadIn = Math.max(0, notes[0].start);
+    if (!leadIn) return 0;
+    for (const note of notes) {
+      note.start -= leadIn;
+      note.end -= leadIn;
+    }
+    return leadIn;
+  }
+
+  function formatMidiPreviewTime(seconds) {
+    const value = Math.max(0, Math.floor(Number(seconds) || 0));
+    return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, '0')}`;
+  }
+
+  function updateMidiPreviewProgress(position) {
+    const seek = document.getElementById('midi-preview-seek');
+    const time = document.getElementById('midi-preview-time');
+    const clamped = Math.max(0, Math.min(previewDuration, Number(position) || 0));
+    if (!previewSeeking) seek.value = String(clamped);
+    time.textContent = `${formatMidiPreviewTime(clamped)} / ${formatMidiPreviewTime(previewDuration)}`;
   }
 
   const MIDI_PREVIEW_WAVES = {
@@ -5833,20 +6578,33 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     }
   }
 
-  function stopMidiPreview() {
+  function stopMidiPreview(preserveProgress = false) {
+    clearTimeout(previewScheduleTimer);
+    clearTimeout(previewEndTimer);
+    clearInterval(previewProgressTimer);
+    previewScheduleTimer = 0;
+    previewEndTimer = 0;
+    previewProgressTimer = 0;
     if (previewContext) {
       previewContext.close().catch(() => {});
       previewContext = null;
     }
     previewGainNode = null;
     previewingTrack = null;
+    if (!preserveProgress) {
+      previewDuration = 0;
+      previewStartOffset = 0;
+      previewSeeking = false;
+      document.getElementById('midi-preview-progress').hidden = true;
+      updateMidiPreviewProgress(0);
+    }
     syncMidiPlayButtons();
     if (currentStatus?.key === 'previewingMidi') {
       clearStatus('previewingMidi');
     }
   }
 
-  async function previewSelectedMidi(singleTrack = null) {
+  async function previewSelectedMidi(singleTrack = null, startOffset = 0, seeking = false) {
     const ready = singleTrack
       ? (singleTrack.preview ? [singleTrack] : [])
       : midiTracks.filter(track => track.preview);
@@ -5854,7 +6612,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       setStatus('noMidiToPreview');
       return;
     }
-    stopMidiPreview();
+    stopMidiPreview(seeking);
     const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
     if (!AudioContextCtor) {
       setStatus('uploadFailed', { error: 'Web Audio is not supported' });
@@ -5876,7 +6634,6 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     master.gain.value = volumePercent / 100;
     master.connect(limiter).connect(context.destination);
     previewGainNode = master;
-    const now = context.currentTime;
     const notesToPlay = [];
     let trackOffset = 0;
     for (const track of ready) {
@@ -5904,7 +6661,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
           else if (program >= 64 && program <= 79) voiceLevel *= 1.08;
           const controls = (note.volume ?? 127) / 127 * (note.expression ?? 127) / 127;
           notesToPlay.push({
-            start: now + start, end: now + Math.max(end, start + 0.08),
+            start, end: Math.max(end, start + 0.08),
             freq: midiNoteFrequency(note.pitch + bend), program,
             velocity: Math.pow((note.velocity || 90) / 127, 2),
             gain: voiceLevel * controls,
@@ -5917,46 +6674,93 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     notesToPlay.sort((a, b) => a.start - b.start);
     const maxNotes = 6000;
     const planned = notesToPlay.slice(0, maxNotes);
-    let maxEnd = now + 1;
-    for (const note of planned) {
+    trimMidiPreviewLeadIn(planned);
+    const playbackStart = context.currentTime + 0.02;
+    let maxEnd = 1;
+    let scheduleCursor = 0;
+    const scheduleNote = note => {
+      const noteStart = playbackStart + Math.max(0, note.start - previewStartOffset);
+      const noteEnd = playbackStart + Math.max(0.02, note.end - previewStartOffset);
       const source = context.createOscillator();
       source.setPeriodicWave(midiPreviewPeriodicWave(context, note.program));
-      source.frequency.setValueAtTime(note.freq, note.start);
+      source.frequency.setValueAtTime(note.freq, noteStart);
       const envelope = midiPreviewEnvelope(note.program);
       const noteGain = context.createGain();
       const peak = note.velocity * note.gain;
-      const attackEnd = Math.min(note.end, note.start + envelope.attack);
-      const decayEnd = Math.min(note.end, attackEnd + envelope.decay);
-      noteGain.gain.setValueAtTime(0.0001, note.start);
+      const attackEnd = Math.min(noteEnd, noteStart + envelope.attack);
+      const decayEnd = Math.min(noteEnd, attackEnd + envelope.decay);
+      noteGain.gain.setValueAtTime(0.0001, noteStart);
       noteGain.gain.linearRampToValueAtTime(peak, attackEnd);
       noteGain.gain.linearRampToValueAtTime(peak * envelope.sustain, decayEnd);
-      const gateLevel = note.end <= attackEnd
-        ? peak * (note.end - note.start) / Math.max(0.001, attackEnd - note.start)
-        : note.end <= decayEnd
+      const gateLevel = noteEnd <= attackEnd
+        ? peak * (noteEnd - noteStart) / Math.max(0.001, attackEnd - noteStart)
+        : noteEnd <= decayEnd
           ? peak + (peak * envelope.sustain - peak) *
-            (note.end - attackEnd) / Math.max(0.001, decayEnd - attackEnd)
+            (noteEnd - attackEnd) / Math.max(0.001, decayEnd - attackEnd)
           : peak * envelope.sustain;
-      const audioEnd = note.end + envelope.release;
-      noteGain.gain.setValueAtTime(Math.max(0.0001, gateLevel), note.end);
+      const audioEnd = noteEnd + envelope.release;
+      noteGain.gain.setValueAtTime(Math.max(0.0001, gateLevel), noteEnd);
       noteGain.gain.linearRampToValueAtTime(0.0001, audioEnd);
       if (typeof context.createStereoPanner === 'function') {
         const panner = context.createStereoPanner();
-        panner.pan.setValueAtTime(Math.max(-1, Math.min(1, note.pan)), note.start);
+        panner.pan.setValueAtTime(Math.max(-1, Math.min(1, note.pan)), noteStart);
         source.connect(noteGain).connect(panner).connect(master);
       } else {
         source.connect(noteGain).connect(master);
       }
-      source.start(note.start);
+      source.start(noteStart);
       source.stop(audioEnd + 0.02);
-      maxEnd = Math.max(maxEnd, audioEnd);
+    };
+    for (const note of planned) {
+      const envelope = midiPreviewEnvelope(note.program);
+      maxEnd = Math.max(maxEnd, note.end + envelope.release);
     }
-    const overallDuration = Math.max(1, maxEnd - now);
+    previewDuration = maxEnd;
+    previewStartOffset = Math.max(0, Math.min(previewDuration, Number(startOffset) || 0));
+    while (scheduleCursor < planned.length && planned[scheduleCursor].end <= previewStartOffset)
+      scheduleCursor++;
+    previewPlaybackStart = playbackStart;
+    const progressPanel = document.getElementById('midi-preview-progress');
+    const seek = document.getElementById('midi-preview-seek');
+    progressPanel.hidden = false;
+    seek.max = String(previewDuration);
+    updateMidiPreviewProgress(previewStartOffset);
+    const scheduleBatch = () => {
+      if (previewContext !== context) return;
+      const elapsed = Math.max(0, context.currentTime - playbackStart);
+      const horizon = previewStartOffset + elapsed + 3;
+      let scheduled = 0;
+      while (scheduleCursor < planned.length && planned[scheduleCursor].start <= horizon &&
+             scheduled < 320) {
+        scheduleNote(planned[scheduleCursor++]);
+        scheduled++;
+      }
+      if (scheduleCursor < planned.length) {
+        const delay = planned[scheduleCursor].start <= horizon ? 0 : 500;
+        previewScheduleTimer = setTimeout(scheduleBatch, delay);
+      } else {
+        previewScheduleTimer = 0;
+      }
+    };
+    const overallDuration = Math.max(0.1, previewDuration - previewStartOffset);
     setStatus('previewingMidi');
-    setTimeout(() => {
+    scheduleBatch();
+    previewProgressTimer = setInterval(() => {
+      if (previewContext !== context || previewSeeking) return;
+      updateMidiPreviewProgress(previewStartOffset +
+        Math.max(0, context.currentTime - previewPlaybackStart));
+    }, 200);
+    previewEndTimer = setTimeout(() => {
       if (previewContext === context) {
+        clearInterval(previewProgressTimer);
+        context.close().catch(() => {});
+        previewScheduleTimer = 0;
+        previewEndTimer = 0;
+        previewProgressTimer = 0;
         previewContext = null;
         previewGainNode = null;
         previewingTrack = null;
+        updateMidiPreviewProgress(previewDuration);
         syncMidiPlayButtons();
         if (currentStatus?.key === 'previewingMidi') {
           clearStatus('previewingMidi');
@@ -5973,6 +6777,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   });
   document.getElementById('controller-launcher').onclick = () => setControllerOpen(true);
   document.getElementById('controller-close').onclick = () => setControllerOpen(false);
+  document.getElementById('controller-mode-apply').onclick = switchControllerDeviceMode;
   document.querySelector('#controller-warning button').onclick = () => {
     controllerPingFailures = 3;
     showControllerRefresh(true);
@@ -6052,6 +6857,20 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     }
     renderMidiManagement();
   };
+  const midiPreviewSeek = document.getElementById('midi-preview-seek');
+  midiPreviewSeek.addEventListener('pointerdown', () => { previewSeeking = true; });
+  midiPreviewSeek.addEventListener('input', event => {
+    previewSeeking = true;
+    updateMidiPreviewProgress(Number(event.currentTarget.value));
+  });
+  midiPreviewSeek.addEventListener('change', event => {
+    const track = previewingTrack;
+    const position = Number(event.currentTarget.value);
+    previewSeeking = false;
+    if (track) previewSelectedMidi(track, position, true);
+    else updateMidiPreviewProgress(position);
+  });
+  midiPreviewSeek.addEventListener('pointercancel', () => { previewSeeking = false; });
   ['midi-play-mode', 'midi-start-mode', 'midi-initial-track', 'midi-reset-on-track']
     .forEach(id => { document.getElementById(id).onchange = renderMidiManagement; });
   function loadMidiFiles(files) {
@@ -6218,6 +7037,21 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   function gameLibraryGrid() {
     const grid = document.getElementById('game-grid');
     if (!grid || typeof BUILTIN_GAMES === 'undefined') return;
+    const presetSource = document.getElementById('ai-preset-source');
+    if (presetSource) {
+      presetSource.replaceChildren();
+      const emptyOption = document.createElement('option');
+      emptyOption.value = '';
+      emptyOption.textContent = text('aiPresetSourceNone');
+      presetSource.append(emptyOption);
+      BUILTIN_GAMES.forEach(game => {
+        const option = document.createElement('option');
+        option.value = game.id;
+        option.textContent = language === 'zh' ? game.title :
+          ((GAME_META[game.id] || {}).en || game.title);
+        presetSource.append(option);
+      });
+    }
     grid.replaceChildren();
     BUILTIN_GAMES.forEach(game => {
       const meta = GAME_META[game.id] || {};
