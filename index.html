@@ -1039,7 +1039,7 @@
       <span><span data-i18n="contactLabel"></span>：
         <span data-i18n="contactQQ"></span> · <span data-i18n="contactWechat"></span></span>
       <span class="home-version"><span data-i18n="webUpdatedAt"></span>
-        <time datetime="2026-09-14T23:41:00+08:00">2026-09-14 23:41</time></span>
+        <time datetime="2026-09-15T15:31:50+08:00">2026-09-15 15:31</time></span>
     </p>
   </section>
   <section id="device-view" class="view" hidden>
@@ -5055,11 +5055,19 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
               return;
             }
             otherDeviceFound = true;
-            setStatus('otherDeviceAvailable', {
-              name: info.name || 'PixelToy', id: String(info.id || '').slice(-4)
-            });
+            const remembered = rememberDiscoveredDevice(info, candidate);
+            if (remembered.added || !remembered.limitReached) {
+              setStatus('scanFound', {
+                name: info.name || 'PixelToy',
+                ip: info.ip || normalizeHost(new URL(candidate).hostname)
+              });
+            } else {
+              setStatus('otherDeviceAvailable', {
+                name: info.name || 'PixelToy', id: String(info.id || '').slice(-4)
+              });
+            }
             logDiscovery('Another device detected',
-              `${info.name || 'PixelToy'} at ${candidate} id=${info.id}; awaiting manual scan`);
+              `${info.name || 'PixelToy'} at ${candidate} id=${info.id}; remembered=${!remembered.limitReached}`);
             return;
           }
           const elapsed = (performance.now() - started) / 1000;
@@ -5353,7 +5361,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
           }
         });
         if (result.cancelled) break;
-        if (result.devices.length) break;
+        if (knownDevices.length >= MAX_KNOWN_DEVICES) break;
       }
       if (firstFound) {
         showScanStatus('scanDevicesFound', { count: String(foundCount) });
@@ -5889,7 +5897,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       logDiscovery('Controller ping failed', `failure=${controllerPingFailures}`);
       setConnectionState('offline');
       showControllerRefresh(true);
-      if (controllerPingFailures >= 3 && !controllerReconnecting) {
+      if (controllerPingFailures >= 2 && !controllerReconnecting) {
         reconnectDevice();
       }
     }
@@ -5938,6 +5946,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
       controlErrorShown = false;
     } catch (error) {
       if (generation !== controlGeneration) return;
+      if (error?.name === 'AbortError' || /aborted/i.test(error?.message || '')) return;
       showControllerRefresh(true);
       if (!controlErrorShown) {
         setStatus('controllerFailed', { error: error.message });
@@ -6041,7 +6050,7 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
     for (let player = 0; player < 2; player++)
       if (controlStates[player]) queueControl(player);
   }, 100);
-  setInterval(pingController, 5000);
+  setInterval(pingController, 2000);
   setInterval(refreshKnownDevicePresence, 5000);
   setTimeout(refreshKnownDevicePresence, 0);
 
@@ -6323,8 +6332,6 @@ mKCVZr6+g1yRpri/tZzGwLdpgQA7`.replace(/\s/g, '');
   }
 
   async function storageAction(action, name, button) {
-    const confirmKey = action === 'RUN' ? 'runStorageConfirm' : 'deleteStorageConfirm';
-    if (!confirm(text(confirmKey, { name }))) return;
     button.disabled = true;
     try {
       const response = await fetch(`${currentBaseUrl}/api/storage`, {
